@@ -127,11 +127,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="functions.cpp" />
+    <ClCompile Include="sharedFunctions.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="userManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="functions.h" />
+    <ClInclude Include="sharedFunctions.h" />
+    <ClInclude Include="createdVariables.h" />
+    <ClInclude Include="userManagement.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="userDatabase.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
