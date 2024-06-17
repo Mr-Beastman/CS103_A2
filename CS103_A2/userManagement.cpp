@@ -1,11 +1,11 @@
 //included libraries
-#include<iostream>
-#include <fstream>
-#include<string>
+#include <iostream>
+#include <string>
+#include <vector>
 
 //header file that allows us to call functions from a seperate file.
 #include "userManagement.h"
-#include "createdVariables.h"
+#include "sharedVariables.h"
 
 using namespace std;
 
@@ -28,21 +28,27 @@ void registerUser(userDetails& newUser) {
     newUser.userType = "user";
 }
 
-//writes user deatails to the "userDatabase"
-//Parameters: filename to store info and pntr to userDetails Variable.
-//Returns: none
-void storeUserDetails(string userDatabase, userDetails& newUser) {
-    ofstream outfile(userDatabase, ios::app);
+bool authenicateLogin(vector<userDetails>& userLogins, string username, string userPassword) {
 
-    if (outfile.is_open()) {
-        outfile << newUser.username << ", " << newUser.password << ", " << newUser.userType << ", "
-            << newUser.firstName << ", " << newUser.lastName << ", "
-            << newUser.contactNumber << ", " << newUser.emailAddress << ", " 
-            << newUser.policy.policyNumber << ", " << newUser.claims.claimNumber 
-            << ", " << newUser.vehicle.carMake << ", " << newUser.vehicle.carModel 
-            << ", " << newUser.vehicle.carYear << endl;
+    /*
+    for (size_t i = 0; i < userLogins.size(); ++i) {
+        cout << userLogins[i].username << " " << userLogins[i].password;
+     }
+     */
+
+    for (size_t i = 0; i < userLogins.size(); ++i) {
+        if (userLogins[i].username == username && userLogins[i].password == userPassword) {
+            return 1;
+        }
     }
-    else {
-        cerr << "Unable to store user details";
-    }
+    cout << "Invalid Credentials\n";
+    return 0;
+}
+
+void adminLogin(userDetails& currentUser) {
+    cout << "Admin Access";
+}
+
+void userLogin(userDetails& currentUser) {
+    cout << "User Access";
 }

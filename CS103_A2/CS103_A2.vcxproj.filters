@@ -18,7 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sharedFunctions.cpp">
+    <ClCompile Include="dataManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="userManagement.cpp">
@@ -26,13 +26,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sharedFunctions.h">
+    <ClInclude Include="dataManagement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="userManagement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="createdVariables.h">
+    <ClInclude Include="sharedVariables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -40,5 +40,8 @@
     <Text Include="userDatabase.txt">
       <Filter>Resource Files</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="userDatabase.json" />
   </ItemGroup>
 </Project>

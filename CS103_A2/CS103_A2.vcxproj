@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -127,19 +127,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="sharedFunctions.cpp" />
+    <ClCompile Include="dataManagement.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="userManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sharedFunctions.h" />
-    <ClInclude Include="createdVariables.h" />
+    <ClInclude Include="dataManagement.h" />
+    <ClInclude Include="sharedVariables.h" />
     <ClInclude Include="userManagement.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="userDatabase.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="userDatabase.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties userDatabase_1json__JsonSchema="https://json-schema.org/draft-07/schema" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

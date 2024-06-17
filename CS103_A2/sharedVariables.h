@@ -34,7 +34,7 @@ struct userDetails {
 
     //constructor
     userDetails() : username("empty"), password("empty"), userType("user")
-        , firstName("Blank"), lastName("blank"), emailAddress("blank")
+        , firstName("blank"), lastName("blank"), emailAddress("blank")
         , contactNumber(0), policy({ 0 }), claims({ 0 })
         , vehicle({ "blank","blank",0 }) {}
 
