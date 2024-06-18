@@ -7,9 +7,7 @@ using namespace std;
 
 void registerUser(userDetails& newUser);
 
-void storeUserDetails(string userDatabase, userDetails& newUser);
-
-bool authenicateLogin(vector<userDetails>& userLogins, string username, string userPassword);
+bool verifyLogin(vector<userDetails>& userLogins, string username, string userPassword);
 
 void adminLogin(userDetails& currentUser);
 
