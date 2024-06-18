@@ -38,6 +38,7 @@ int main() {
             cout << "Enter Password : ";
             cin >> userPassword;
 
+
             //collect current logins and corrosponding passwords.
             loginCheck = getLogins(userDatabase);
             
