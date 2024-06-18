@@ -6,7 +6,7 @@
 #include <string>
 #include <limits>
 
-//header file that allows us to call functions from a seperate file.
+//header file that allows us to call functions from a separate file.
 #include "dataManagement.h"
 #include "sharedVariables.h"
 
@@ -45,7 +45,7 @@ int inputValidation() {
     return userInput;
 }
 
-//writes user deatails to the "userDatabase"
+//writes user details to the "userDatabase"
 //Parameters: filename to store info and pntr to userDetails Variable.
 //Returns: none
 void storeUserDetails(string userDatabase, userDetails& newUser) {
@@ -64,7 +64,7 @@ void storeUserDetails(string userDatabase, userDetails& newUser) {
     }
 }
 
-//seacrch via username to get account details and update userDetails pntr
+//search via username to get account details and update userDetails pntr
 //Parameters : database filename, userDetail structure to update, username to search with.
 //Returns : none
 void getAccountDetails(string userDatabase, userDetails& user, string searchUser) {
