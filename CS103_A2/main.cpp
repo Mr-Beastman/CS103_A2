@@ -66,7 +66,7 @@ int main() {
 
         }
         else if (userInput == 2) {
-            cout << "\nSelected register\n";    //testing place holder
+            cout << "\nSelected register\n";
             registerUser(currentUser);
             storeUserDetails(userDatabase, currentUser);
             cout << "\nNew user created";
