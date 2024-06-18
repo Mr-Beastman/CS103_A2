@@ -48,7 +48,6 @@ void adminLogin(userDetails& currentUser) {
     cout << "check program flow chart for options";
 }
 
-
 //function to display user/client menu and features.
 //paramerters : struct containing logged in users details. pntr.
 //returns : void
@@ -71,6 +70,7 @@ void userLogin(userDetails& currentUser) {
         }
         else if (userInput == 2) {
             cout << "\nView/update\n";
+            userUpdate(currentUser);
         }
         else if (userInput == 3) {
             cout << "\nLogging Out and returning to menu\n";
@@ -80,4 +80,54 @@ void userLogin(userDetails& currentUser) {
     } while (menuLoop == 1);
 
 
+}
+
+void updateInput(int Input, userDetails& currentUser) {
+    cout << "\nWhat would you like to do?" << "\n(input 1-5 to change information, 6 to return to menu)";
+    cin >> Input;
+    switch (Input) {
+    case (1):
+        cout << "\nFirst Name: ";
+        cin >> currentUser.firstName;
+        updateInput(Input, currentUser);
+    case (2):
+        cout << "\nLast Name: ";
+        cin >> currentUser.lastName;
+        updateInput(Input, currentUser);
+    case (3):
+        cout << "\nContact Number: ";
+        cin >> currentUser.contactNumber;
+        updateInput(Input, currentUser);
+    case (4):
+        cout << "\nEmail Address: ";
+        cin >> currentUser.emailAddress;
+        updateInput(Input, currentUser);
+    case (5):
+        cout << "\nVehicle Information: ";
+
+        cout << "\nCar Make:";
+        cin >> currentUser.vehicle.carMake;
+
+        cout << "\nCar Model: ";
+        cin >> currentUser.vehicle.carModel;
+
+        cout << "\nCar Year: ";
+        cin >> currentUser.vehicle.carYear;
+        updateInput(Input, currentUser);
+    case (6):
+        userLogin(currentUser);
+    }
+}
+
+void userUpdate(userDetails& currentUser) {
+
+    int userInput = 0;
+
+    cout << "\n1: First Name: " << currentUser.firstName;
+    cout << "\n2: Last Name: " << currentUser.lastName;
+    cout << "\n3: Contact Number: " << currentUser.contactNumber;
+    cout << "\n4: Email Address: " << currentUser.emailAddress;
+    cout << "\n5: Vehicle Information: " << currentUser.vehicle.carMake << ", " << currentUser.vehicle.carModel << ", " << currentUser.vehicle.carYear;
+
+    updateInput(userInput, currentUser);
 }

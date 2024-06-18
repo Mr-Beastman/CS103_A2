@@ -18,14 +18,14 @@ int main() {
     vector<userDetails> loginCheck;
 
     cout << "*******************************\n";
-    cout << "* Ultra Insurance Manger 2024 *\n";
+    cout << "* Ultra Insurance Manager 2024 *\n";
     cout << "*******************************\n";
 
     do {
         cout << "\nWelcome to the insurance portal\n";
-        cout << "01. Login\n";
-        cout << "02. Register\n";
-        cout << "03. Exit\n";
+        cout << "1. Login\n";
+        cout << "2. Register\n";
+        cout << "3. Exit\n";
         cout << "Selection: ";
 
         userInput = inputValidation();
