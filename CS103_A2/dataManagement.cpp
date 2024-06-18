@@ -64,6 +64,39 @@ void storeUserDetails(string userDatabase, userDetails& newUser) {
     }
 }
 
+//seacrch via username to get account details and update userDetails pntr
+//Parameters : database filename, userDetail structure to update, username to search with.
+//Returns : none
+void getAccountDetails(string userDatabase, userDetails& user, string searchUser) {
+    ifstream file(userDatabase);
+    string line;
+    userDetails account;
+    string username;
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+
+        getline(ss, username, ',');
+        if (username == searchUser) {
+            user.username = username;
+            getline(ss, user.password, ',');
+            getline(ss, user.userType, ',');
+            getline(ss, user.firstName, ',');
+            getline(ss, user.lastName, ',');
+            ss >> user.contactNumber;
+            ss.ignore();
+            getline(ss, user.emailAddress, ',');
+            ss >> user.policy.policyNumber;
+            ss.ignore();
+            ss >> user.claims.claimNumber;
+            ss.ignore();
+            getline(ss, user.vehicle.carMake, ',');
+            getline(ss, user.vehicle.carModel, ',');
+            ss >> user.vehicle.carYear;
+        }
+    }
+}
+
 //collects usernames and passwords from userDatabase.txt.
 //parameters : string containt name of text file to check
 //returns : a vector containing all current usernames and passwords.
@@ -93,4 +126,5 @@ vector<userDetails> getLogins(string userDatabase) {
 
         usernames.push_back(user);
     }
+    return usernames;
 }
