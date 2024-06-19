@@ -53,9 +53,9 @@ void storeUserDetails(string userDatabase, userDetails& newUser) {
 
     if (outfile.is_open()) {
         outfile << newUser.username << "," << newUser.password << "," << newUser.userType << ","
-            << newUser.accountStatus<< "," << newUser.firstName << "," << newUser.lastName << ","
-            << newUser.contactNumber << "," << newUser.emailAddress << ","
-            << newUser.policy.policyNumber << "," << newUser.claims.claimNumber
+            << newUser.accountStatus << "," << newUser.firstName << "," << newUser.lastName << ","
+            << newUser.contactNumber << "," << newUser.emailAddress << "," << newUser.policy.policyNumber <<
+            "," << newUser.policy.policyNumber << "," << newUser.claims.claimNumber
             << "," << newUser.vehicle.carMake << "," << newUser.vehicle.carModel
             << "," << newUser.vehicle.carYear << endl;
     }
@@ -81,11 +81,13 @@ void getAccountDetails(string userDatabase, userDetails& user, string searchUser
             user.username = username;
             getline(ss, user.password, ',');
             getline(ss, user.userType, ',');
+            getline(ss, user.accountStatus, ',');
             getline(ss, user.firstName, ',');
             getline(ss, user.lastName, ',');
             ss >> user.contactNumber;
             ss.ignore();
             getline(ss, user.emailAddress, ',');
+            getline(ss, user.policy.insurerName, ',');
             ss >> user.policy.policyNumber;
             ss.ignore();
             ss >> user.claims.claimNumber;

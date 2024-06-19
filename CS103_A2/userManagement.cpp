@@ -83,7 +83,7 @@ void userLogin(userDetails& currentUser) {
     //menu loop for client menu
     do {
         cout << "\n==== Client Portal ====\n";
-        cout << "1. View Polices\n";
+        cout << "1. View my Polices\n";
         cout << "2. View/Update Details\n";
         cout << "3. Log out\n";
 
