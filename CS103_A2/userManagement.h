@@ -5,9 +5,11 @@
 
 using namespace std;
 
-void registerUser(userDetails& newUser);
+void registerUser(vector<userDetails>& userLogins, userDetails& newUser);
 
 bool verifyLogin(vector<userDetails>& userLogins, string username, string userPassword);
+
+bool checkLogin(vector<userDetails>& userLogins, string username);
 
 void adminLogin(userDetails& currentUser);
 

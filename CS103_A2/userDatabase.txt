@@ -1,4 +1,2 @@
 
-
-Paperman,T0pB0ss,user,Micheal,Scott,202200,micheal@dundermifflin.com,0,0,blank,blank,0
-test,123,user,Tester,Testerson,20202020,test@test.com,0,0,blank,blank,0
+BeetFarmer08,BeetsBears,user,active,Dwight,Schrute,2020202020,dwight@dundermifflin.com,0,0,blank,blank,0

@@ -10,11 +10,12 @@
 using namespace std;
 
 int main() {
-    int userInput;
+    const int MaxAttempts = 3;
+    int userInput, loginAttempts=0;
     userDetails currentUser;
     string userDatabase = "userDatabase.txt";
     string username, userPassword;
-    bool menuLoop = 1;
+    bool menuLoop = 1,sercurityPass=0;
     vector<userDetails> loginCheck;
 
     cout << "*******************************\n";
@@ -32,42 +33,62 @@ int main() {
 
         //if loop for navigating menu
         if (userInput == 1) {
-            cout << "\nChoose to login\n";  //testing place holder
-            cout << "Enter Username : ";
-            cin >> username;
-            cout << "Enter Password : ";
-            cin >> userPassword;
-
-
             //collect current logins and corrosponding passwords.
             loginCheck = getLogins(userDatabase);
             
-            //checking if entered details are correct
-            if (verifyLogin(loginCheck, username, userPassword)) {
-                cout << "\nlog in success\n";
-                
-                //populate currentUser variable with account details mathcing the login.
-                getAccountDetails(userDatabase, currentUser, username);
+            while (loginAttempts < MaxAttempts && !sercurityPass) {
 
-                //check user type and open accordingly
-                if (currentUser.userType == "user") {
-                    userLogin(currentUser);
-                }
-                else if (currentUser.userType == "admin") {
-                    adminLogin(currentUser);
+                cout << "\nChoose to login\n";  //testing place holder
+                cout << "Enter Username : ";
+                cin >> username;
+                cout << "Enter Password : ";
+                cin >> userPassword;
+
+                //checking username exists
+                if (checkLogin(loginCheck, username)) {
+
+                    //checking if entered details are correct
+                    if (verifyLogin(loginCheck, username, userPassword)) {
+                        cout << "\nlog in success\n";
+
+                        sercurityPass = 1;
+                        //populate currentUser variable with account details mathcing the login.
+                        getAccountDetails(userDatabase, currentUser, username);
+
+                        //check user type and open accordingly
+                        if (currentUser.userType == "user") {
+                            userLogin(currentUser);
+                        }
+                        else if (currentUser.userType == "admin") {
+                            adminLogin(currentUser);
+                        }
+                        else {
+                            //error message incase of data fault
+                            cout << "User Type not defined. Please contact admin team";
+                        }
+                    }
+                    else {
+                        //notify user of incorrect login details an records failed attempt
+                        cout << "\nIncorrect Username or Password. Please try again.\n";
+                        loginAttempts++;
+                    }
                 }
                 else {
-                    cout << "User Type not defined. Please contact admin team";
+                    //notify uesrname not found.
+                    cout << "\nError: Username " << username << " does not exist.\n";
                 }
             }
-            else {
-                cout << "\nlog in fail\n";
-            }
 
+            //if max attepts reached and security not cleared terminate program.
+            if (!sercurityPass) {
+                cout << "\nToo many attempts made. Exiting Program.\n";
+                return 0;
+            }
         }
         else if (userInput == 2) {
             cout << "\nSelected register\n";
-            registerUser(currentUser);
+            loginCheck = getLogins(userDatabase);
+            registerUser(loginCheck,currentUser);
             storeUserDetails(userDatabase, currentUser);
             cout << "\nNew user created";
         }

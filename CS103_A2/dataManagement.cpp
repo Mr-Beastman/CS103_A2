@@ -53,7 +53,7 @@ void storeUserDetails(string userDatabase, userDetails& newUser) {
 
     if (outfile.is_open()) {
         outfile << newUser.username << "," << newUser.password << "," << newUser.userType << ","
-            << newUser.firstName << "," << newUser.lastName << ","
+            << newUser.accountStatus<< "," << newUser.firstName << "," << newUser.lastName << ","
             << newUser.contactNumber << "," << newUser.emailAddress << ","
             << newUser.policy.policyNumber << "," << newUser.claims.claimNumber
             << "," << newUser.vehicle.carMake << "," << newUser.vehicle.carModel
@@ -65,7 +65,7 @@ void storeUserDetails(string userDatabase, userDetails& newUser) {
 }
 
 //search via username to get account details and update userDetails pntr
-//Parameters : database filename, userDetail structure to update, username to search with.
+//Parameters : database filename, userDetail structure to store in, username to search with.
 //Returns : none
 void getAccountDetails(string userDatabase, userDetails& user, string searchUser) {
     ifstream file(userDatabase);

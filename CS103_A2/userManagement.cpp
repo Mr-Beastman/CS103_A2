@@ -15,9 +15,22 @@ using namespace std;
 //Request user input for basic account info.
 //Parameters : pntr to userDetails variable to be populated.
 //Returns : none.
-void registerUser(userDetails& newUser) {
-    cout << "Enter Username: ";
-    cin >> newUser.username;
+void registerUser(vector<userDetails>& userLogins, userDetails& newUser) {
+    bool repeatUsername=1;
+    
+    //doWhile to check if username is already taken and prompt re-entery.
+    do {
+        cout << "Enter Username: ";
+        cin >> newUser.username;
+
+        if (checkLogin(userLogins, newUser.username)) {
+            cout << "Username already taken, please enter a new one.\n";
+        }
+        else {
+            repeatUsername = 0;
+        }
+    } while (repeatUsername==1);
+
     cout << "Enter Password: ";
     cin >> newUser.password;
     cout << "Enter First Name: ";
@@ -31,9 +44,21 @@ void registerUser(userDetails& newUser) {
     newUser.userType = "user";
 }
 
+//check if a username exist in data base.
+//parameters : vector containing existing usernames
+//retursn : True if exists false if not.
+bool checkLogin(vector<userDetails>& userLogins, string username) {
+    for (size_t i = 0; i < userLogins.size(); ++i) {
+        if (userLogins[i].username == username) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 //check if inputted username and password combination exists
 //parameters : vecotr of all current combinations, user input for username and password.
-//returns : none.
+//returns : True if correct false if not.
 bool verifyLogin(vector<userDetails>& userLogins, string username, string userPassword) {
     for (size_t i = 0; i < userLogins.size(); ++i) {
         if (userLogins[i].username == username && userLogins[i].password == userPassword) {
