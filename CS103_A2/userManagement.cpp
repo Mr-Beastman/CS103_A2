@@ -115,18 +115,22 @@ void updateInput(int Input, userDetails& currentUser) {
         cout << "\nFirst Name: ";
         cin >> currentUser.firstName;
         updateInput(Input, currentUser);
+        break;
     case (2):
         cout << "\nLast Name: ";
         cin >> currentUser.lastName;
         updateInput(Input, currentUser);
+        break;
     case (3):
         cout << "\nContact Number: ";
         cin >> currentUser.contactNumber;
         updateInput(Input, currentUser);
+        break;
     case (4):
         cout << "\nEmail Address: ";
         cin >> currentUser.emailAddress;
         updateInput(Input, currentUser);
+        break;
     case (5):
         cout << "\nVehicle Information: ";
 
@@ -139,8 +143,10 @@ void updateInput(int Input, userDetails& currentUser) {
         cout << "\nCar Year: ";
         cin >> currentUser.vehicle.carYear;
         updateInput(Input, currentUser);
+        break;
     case (6):
         userLogin(currentUser);
+        break;
     }
 }
 
