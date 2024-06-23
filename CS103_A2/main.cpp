@@ -10,7 +10,7 @@
 using namespace std;
 
 int main() {
-    const int MaxAttempts = 3;
+    const int kMaxAttempts = 3;
     int userInput, loginAttempts=0;
     userDetails currentUser;
     string userDatabase = "userDatabase.txt";
@@ -18,12 +18,12 @@ int main() {
     bool menuLoop = 1,sercurityPass=0;
     vector<userDetails> loginCheck;
 
-    cout << "*******************************\n";
+    cout << "********************************\n";
     cout << "* Ultra Insurance Manager 2024 *\n";
-    cout << "*******************************\n";
+    cout << "********************************\n";
 
     do {
-        cout << "\nWelcome to the insurance portal\n";
+        cout << "\n=== Welcome to the insurance portal ===\n";
         cout << "1. Login\n";
         cout << "2. Register\n";
         cout << "3. Exit\n";
@@ -36,7 +36,7 @@ int main() {
             //collect current logins and corrosponding passwords.
             loginCheck = getLogins(userDatabase);
             
-            while (loginAttempts < MaxAttempts && !sercurityPass) {
+            while (loginAttempts < kMaxAttempts && !sercurityPass) {
 
                 cout << "\nChoose to login\n";  //testing place holder
                 cout << "Enter Username : ";

@@ -68,9 +68,45 @@ bool verifyLogin(vector<userDetails>& userLogins, string username, string userPa
     return 0;
 }
 
+//display menu for admin users.
+//parameter :
+//returns : none
 void adminLogin(userDetails& currentUser) {
-    cout << "\n===== Staff Portal ====\n";
-    cout << "check program flow chart for options";
+    bool menuLoop = 1;
+    int userInput;
+    userDetails clientDetails;
+    vector<userDetails> loginCheck;
+    string username, userDatabase = "userDatabase.txt";
+    
+    while (menuLoop) {
+        cout << "\n===== Staff Portal ====\n";
+        cout << "1. Search for Client\n";
+        cout << "2. Reports\n";
+        cout << "3. Logout\n";
+        cout << "Selection: ";
+
+        userInput = inputValidation();
+
+        if (userInput == 1) {
+            cout << "\nEnter clinet's username: ";
+            cin >> username;
+
+            loginCheck = getLogins(userDatabase);
+
+            if (checkLogin(loginCheck, username)) {
+                cout << "\nAccount Found. Loading Details\n";
+                getAccountDetails(userDatabase, clientDetails, username);
+                displayUserData(clientDetails);
+            }
+            else {
+                cout<<"\nInvalid Username\n";
+            }
+        }
+        else if (userInput == 3) {
+            cout << "\nLogging Out and returning to menu\n";
+            menuLoop = 0;
+        }
+    }
 }
 
 //function to display user/client menu and features.
@@ -79,9 +115,10 @@ void adminLogin(userDetails& currentUser) {
 void userLogin(userDetails& currentUser) {
     bool menuLoop = 1;
     int userInput;
+    string userDatabase = "userDatabase.txt";
 
     //menu loop for client menu
-    do {
+    while (menuLoop) {
         cout << "\n==== Client Portal ====\n";
         cout << "1. View my Polices\n";
         cout << "2. View/Update Details\n";
@@ -91,20 +128,18 @@ void userLogin(userDetails& currentUser) {
 
         //selection logic for user input
         if (userInput == 1) {
-            cout << "\nDisplay polices\n";
+            displayUserData(currentUser);
         }
         else if (userInput == 2) {
             cout << "\nView/update\n";
             userUpdate(currentUser);
+            storeUpdatedDetails(userDatabase, currentUser);
         }
         else if (userInput == 3) {
             cout << "\nLogging Out and returning to menu\n";
             menuLoop = 0;
         }
-
-    } while (menuLoop == 1);
-
-
+    }
 }
 
 void updateInput(int Input, userDetails& currentUser) {
@@ -135,13 +170,13 @@ void updateInput(int Input, userDetails& currentUser) {
         cout << "\nVehicle Information: ";
 
         cout << "\nCar Make:";
-        cin >> currentUser.vehicle.carMake;
+        cin >> currentUser.policy.carMake;
 
         cout << "\nCar Model: ";
-        cin >> currentUser.vehicle.carModel;
+        cin >> currentUser.policy.carModel;
 
         cout << "\nCar Year: ";
-        cin >> currentUser.vehicle.carYear;
+        cin >> currentUser.policy.carYear;
         updateInput(Input, currentUser);
         break;
     case (6):
@@ -158,7 +193,7 @@ void userUpdate(userDetails& currentUser) {
     cout << "\n2: Last Name: " << currentUser.lastName;
     cout << "\n3: Contact Number: " << currentUser.contactNumber;
     cout << "\n4: Email Address: " << currentUser.emailAddress;
-    cout << "\n5: Vehicle Information: " << currentUser.vehicle.carMake << ", " << currentUser.vehicle.carModel << ", " << currentUser.vehicle.carYear;
+    cout << "\n5: Vehicle Information: " << currentUser.policy.carMake << ", " << currentUser.policy.carModel << ", " << currentUser.policy.carYear;
 
     updateInput(userInput, currentUser);
 }
