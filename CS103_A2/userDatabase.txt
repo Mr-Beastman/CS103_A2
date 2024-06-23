@@ -1,3 +1,5 @@
 Tester,123,user,active,Tester,Testerson,20202020,testy@tester.com,0,0,blank,blank,0,blank,0,blank,blank,blank,blank,blank,0
 
 GreatScott,Micheal,admin,active,Micheal,Scott,20202020,Micheal@dundermifflin.com,0,blank,blank,blank,0,blank,0,blank,blank,blank,blank,blank,0
+t,t,user,active,t,t,20,t,Ô,1,Third party fire and theft,1200.45,Nissan,wingroad,2017,h8ad6,0,blank,blank,blank,blank,blank,0
+a,a,user,active,a,a,20,a,Insure Supreme,7986,Comprehensive,1500.75,nis,test,15,asd,0,blank,blank,blank,blank,blank,0

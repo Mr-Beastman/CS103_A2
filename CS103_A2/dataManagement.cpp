@@ -1,7 +1,8 @@
 //included libraries
-#include <iostream>
+#include <iostream>  
 #include <fstream>
 #include <sstream>
+#include <random>  
 #include <vector>
 #include <string>
 #include <limits>
@@ -46,6 +47,22 @@ int inputValidation() {
     return userInput;
 }
 
+
+//generate a random policy Number
+//parameters : None
+//returns : random int value
+int generatePolicyNum() {
+    int min = 1000;
+    int max = 9999;
+
+    random_device rd;
+    mt19937 gen(rd());
+
+    uniform_int_distribution<>dis(min, max);
+
+    return(dis(gen));
+}
+
 //displays important userdata present in current structure
 //parameters : structure with data to display.
 //returns : none
@@ -59,7 +76,7 @@ void displayUserData(userDetails& toDisplay) {
     cout << "2. Policy Detals\n";
     cout << "3. Current Claim\n";
     cout << "4. All Account Info\n";
-    //cout << "5. Return to Previous Menu\n";
+    cout << "5. Return to Previous Menu\n";
     cout << "Selection: ";
 
     userInput = inputValidation();
@@ -86,7 +103,7 @@ void displayUserData(userDetails& toDisplay) {
         else {
             cout << "Insurer Name: " << toDisplay.policy.insurerName << "\n";
             cout << "Policy Number: " << toDisplay.policy.policyNumber << "\n";
-            cout << "Coverage Type: " << toDisplay.policy.insurerName << "\n";
+            cout << "Coverage Type: " << toDisplay.policy.coverageType << "\n";
             cout << "Premium Amount: $" << toDisplay.policy.preniumAmount << "\n";
             cout << "Car Make: " << toDisplay.policy.carMake << "\n";
             cout << "Car Model: " << toDisplay.policy.carModel << "\n";
@@ -112,6 +129,10 @@ void displayUserData(userDetails& toDisplay) {
             cout << "\n";
         }
     }
+    else if(userInput == 5) {
+        cout << "\Returning to Previous Menu\n";
+        menuLoop = 0;
+    }
 }
 
 //writes user details to the "userDatabase"
@@ -129,8 +150,10 @@ void storeUserDetails(string userDatabase, userDetails& newUser) {
             << newUser.lastName << ","
             << newUser.contactNumber << ","
             << newUser.emailAddress << "," 
-            << newUser.policy.policyNumber << ","
             << newUser.policy.insurerName << ","
+            << newUser.policy.policyNumber << ","
+            << newUser.policy.coverageType << ","
+            << newUser.policy.preniumAmount << ","
             << newUser.policy.carMake << ","
             << newUser.policy.carModel << ","
             << newUser.policy.carYear << ","
@@ -173,6 +196,8 @@ void storeUpdatedDetails(string userDatabase, userDetails& userUpdates) {
                 << userUpdates.emailAddress << ","
                 << userUpdates.policy.insurerName << ","
                 << userUpdates.policy.policyNumber << ","
+                << userUpdates.policy.coverageType << ","
+                << userUpdates.policy.preniumAmount << ","
                 << userUpdates.policy.carMake << ","
                 << userUpdates.policy.carModel << ","
                 << userUpdates.policy.carYear << ","
@@ -228,6 +253,9 @@ void getAccountDetails(string userDatabase, userDetails& user, string searchUser
             getline(ss, user.policy.insurerName, ',');
             ss >> user.policy.policyNumber;
             ss.ignore();
+            getline(ss, user.policy.coverageType, ',');
+            ss >> user.policy.preniumAmount;
+            ss.ignore();
             getline(ss, user.policy.carMake, ',');
             getline(ss, user.policy.carModel, ',');
             ss >> user.policy.carYear;
@@ -242,6 +270,42 @@ void getAccountDetails(string userDatabase, userDetails& user, string searchUser
             getline(ss, user.claims.claimStatus, ',');
         }
     }
+}
+
+//get policy details from policyDatabase.txt
+//parameter : database filenmae, vector of struct to update with information
+//retuns : none
+void getPolicyDetails(string policyDatabase, vector<insurancePolices>& policies) {
+    ifstream file(policyDatabase);
+    string line;
+    float premium;
+
+    while (getline(file, line)) {
+        istringstream ss(line);
+        string insurer, coverage, description, premiumString;
+
+        getline(ss, insurer, ',');
+        getline(ss, coverage, ',');
+        getline(ss, description, ',');
+        
+        getline(ss, premiumString, ',');
+        premium = stof(premiumString);
+
+        insurancePolices policy = { insurer,coverage,description,premium };
+        policies.push_back(policy);
+    }
+
+    file.close();
+}
+
+//fucntin for displaying policy info fromn a struct.
+//parameters : Struct with info to view
+//retutns : none
+void displayPolicyDetails(insurancePolices policy) {
+    cout << "Insurer : " << policy.insurer << "\n";
+    cout << "Coverage Type : " << policy.coverage << "\n";
+    cout << "Description : " << policy.description << "\n";
+    cout << "Premium : $" << policy.premiumn<<"\n";
 }
 
 //collects usernames and passwords from userDatabase.txt.

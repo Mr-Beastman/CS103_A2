@@ -5,6 +5,13 @@
 
 using namespace std;
 
+struct insurancePolices {
+    string insurer;
+    string coverage;
+    string description;
+    float premiumn;
+};
+
 struct policyDetails {
     string insurerName;
     int policyNumber;
@@ -25,14 +32,6 @@ struct claimsDetails {
     string claimStatus;
     float claimAmount;
 };
-
-/* easier to keep vehicle with policy rather then connect them later.
-struct vehicleDetails {
-    string carMake;
-    string carModel;
-    int carYear;
-};
-*/
 
 //struct to hold key user information.
 struct userDetails {

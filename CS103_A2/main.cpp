@@ -87,6 +87,8 @@ int main() {
         }
         else if (userInput == 2) {
             cout << "\nSelected register\n";
+
+            //functions for registering, checking username available and saving new user.
             loginCheck = getLogins(userDatabase);
             registerUser(loginCheck,currentUser);
             storeUserDetails(userDatabase, currentUser);

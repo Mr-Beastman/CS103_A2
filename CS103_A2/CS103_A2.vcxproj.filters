@@ -24,6 +24,9 @@
     <ClCompile Include="userManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="adminMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dataManagement.h">
@@ -35,9 +38,15 @@
     <ClInclude Include="sharedVariables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="adminMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="userDatabase.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="policyDatabase.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

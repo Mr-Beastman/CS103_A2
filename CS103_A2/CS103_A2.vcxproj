@@ -129,14 +129,17 @@
   <ItemGroup>
     <ClCompile Include="dataManagement.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="adminMenu.cpp" />
     <ClCompile Include="userManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dataManagement.h" />
+    <ClInclude Include="adminMenu.h" />
     <ClInclude Include="sharedVariables.h" />
     <ClInclude Include="userManagement.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="policyDatabase.txt" />
     <Text Include="userDatabase.txt" />
   </ItemGroup>
   <ItemGroup>

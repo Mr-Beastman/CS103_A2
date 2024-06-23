@@ -46,7 +46,7 @@ void registerUser(vector<userDetails>& userLogins, userDetails& newUser) {
 
 //check if a username exist in data base.
 //parameters : vector containing existing usernames
-//retursn : True if exists false if not.
+//returns : True if exists false if not.
 bool checkLogin(vector<userDetails>& userLogins, string username) {
     for (size_t i = 0; i < userLogins.size(); ++i) {
         if (userLogins[i].username == username) {
@@ -76,18 +76,31 @@ void adminLogin(userDetails& currentUser) {
     int userInput;
     userDetails clientDetails;
     vector<userDetails> loginCheck;
-    string username, userDatabase = "userDatabase.txt";
+    vector<insurancePolices> availablePolices;
+    string username, userDatabase = "userDatabase.txt", policyDatabase ="policyDatabase.txt";
     
     while (menuLoop) {
         cout << "\n===== Staff Portal ====\n";
-        cout << "1. Search for Client\n";
-        cout << "2. Reports\n";
-        cout << "3. Logout\n";
+
+        cout << "1. Register New Client\n";
+        cout << "2. Search for Client\n";
+        cout << "3. Generate Reports\n";
+        cout << "4. Logout\n";
         cout << "Selection: ";
 
         userInput = inputValidation();
+        cout << "\n";
 
         if (userInput == 1) {
+            cout << "\nCreating a new account\n";
+            loginCheck = getLogins(userDatabase);
+            registerUser(loginCheck, clientDetails);
+            addPolicy(availablePolices, clientDetails);
+            storeUserDetails(userDatabase, clientDetails);
+            cout << "\nNew User Created\n";
+            cout << "Returning to Menu\n";
+        }
+        else if (userInput == 2) {
             cout << "\nEnter clinet's username: ";
             cin >> username;
 
@@ -103,11 +116,67 @@ void adminLogin(userDetails& currentUser) {
             }
         }
         else if (userInput == 3) {
+            cout << "\nGenerate a report\n";
+        }
+        else if (userInput == 4) {
             cout << "\nLogging Out and returning to menu\n";
             menuLoop = 0;
         }
     }
 }
+
+
+//Add policy to users account
+//parameters : vector of available polocies and the user to add selection to
+//returns : none
+void addPolicy(vector<insurancePolices>& availablePolices, userDetails& toUpdate) {
+    const string kPolicyDatabase = "policyDatabase.txt";
+    int userInput, carYear;
+    string carMake, carModel, licensePlate;
+
+    cout << "\nPlease Select a Policy Option\n";
+
+    getPolicyDetails(kPolicyDatabase, availablePolices);
+
+    for (size_t i = 0; i < availablePolices.size(); ++i) {
+        cout << "Insurance Option " << (i + 1) << "\n";
+        displayPolicyDetails(availablePolices[i]);
+        cout << "\n";
+    }
+
+    cout << "\nSelection: ";
+
+    userInput = inputValidation();
+
+    if (userInput == 1 || userInput == 2 || userInput == 3) {
+        toUpdate.policy.insurerName = availablePolices[(userInput - 1)].insurer;
+        toUpdate.policy.coverageType = availablePolices[(userInput - 1)].coverage;
+        toUpdate.policy.preniumAmount = availablePolices[(userInput - 1)].premiumn;
+    }
+
+    toUpdate.policy.policyNumber = generatePolicyNum();
+
+    cout << "\nPlease enter vehicle details:\n";
+    cout << "Car Make: ";
+    cin >> carMake;
+    cout << "Car Model: ";
+    cin >> carModel;
+    cout << "Car Year: ";
+    cin >> carYear;
+    cout << "License Plare: ";
+    cin >> licensePlate;
+
+    toUpdate.policy.carMake = carMake;
+    toUpdate.policy.carModel = carModel;
+    toUpdate.policy.carYear = carYear;
+    toUpdate.policy.licensePlate = licensePlate;
+}
+
+void addClaim() {
+
+}
+
+
 
 //function to display user/client menu and features.
 //paramerters : struct containing logged in users details. pntr.
