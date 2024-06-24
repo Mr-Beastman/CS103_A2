@@ -5,6 +5,7 @@
 //header files that allows us to call functions/variables from seperate files.
 #include "dataManagement.h"
 #include "userManagement.h"
+#include "menuManagement.h"
 #include "sharedVariables.h"
 
 using namespace std;

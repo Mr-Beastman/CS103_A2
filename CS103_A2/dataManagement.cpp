@@ -2,10 +2,12 @@
 #include <iostream>  
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 #include <random>  
 #include <vector>
 #include <string>
 #include <limits>
+#include <ctime>
 
 //header file that allows us to call functions from a separate file.
 #include "dataManagement.h"
@@ -48,6 +50,22 @@ int inputValidation() {
 }
 
 
+//get todays date for recording creation dates.
+//parameters : none
+//returns : string containing the current date in dd/mm/yyyy format
+string creationDate(){
+
+    ostringstream currentDate;
+    time_t t = time(0);
+    tm now;
+    
+    localtime_s(&now, &t);
+    
+    currentDate << put_time(&now, "%d/%m/%y");
+
+    return currentDate.str();
+}
+
 //generate a random policy Number
 //parameters : None
 //returns : random int value
@@ -63,75 +81,68 @@ int generatePolicyNum() {
     return(dis(gen));
 }
 
-//displays important userdata present in current structure
-//parameters : structure with data to display.
-//returns : none
-void displayUserData(userDetails& toDisplay) {
-    int userInput;
-    bool menuLoop=1;
+//generate a random claim Number
+//parameters : None
+//returns : random int value
+int generateClaimNum() {
+    int min = 100;
+    int max = 999;
 
+    random_device rd;
+    mt19937 gen(rd());
 
-    cout << "Which info do you wish to view?\n";
-    cout << "1. Client Detials\n";
-    cout << "2. Policy Detals\n";
-    cout << "3. Current Claim\n";
-    cout << "4. All Account Info\n";
-    cout << "5. Return to Previous Menu\n";
-    cout << "Selection: ";
+    uniform_int_distribution<>dis(min, max);
 
-    userInput = inputValidation();
+    return(dis(gen));
+}
+
+void displayAccountData(userDetails& toDisplay) {
+    cout << "-- Client Details --\n";
+    cout << "Username: " << toDisplay.username << "\n";
+    cout << "User Type: " << toDisplay.userType << "\n";
+    cout << "Account Status: " << toDisplay.accountStatus << "\n";
+    cout << "First Name : " << toDisplay.firstName << "\n";
+    cout << "Last Name : " << toDisplay.lastName << "\n";
+    cout << "Contact Number : " << toDisplay.contactNumber << "\n";
+    cout << "Email Address : " << toDisplay.emailAddress << "\n";
     cout << "\n";
+}
 
-    if (userInput == 1 || userInput == 4) {
-        cout << "-- Client Details --\n";
-        cout << "Username: " << toDisplay.username << "\n";
-        cout << "User Type: " << toDisplay.userType << "\n";
-        cout << "Account Status: " << toDisplay.accountStatus << "\n";
-        cout << "First Name : " << toDisplay.firstName << "\n";
-        cout << "Last Name : " << toDisplay.lastName << "\n";
-        cout << "Contact Number : " << toDisplay.contactNumber << "\n";
-        cout << "Email Address : " << toDisplay.emailAddress << "\n";
+void displayAccountPolicy(userDetails& toDisplay) {
+    cout << "-- Policy Details --\n";
+    if (toDisplay.policy.policyNumber == 0) {
+        cout << "No active policy at this time.\n";
+        cout << "Please contact a reprsentative to create a new policy\n";
         cout << "\n";
     }
-    if (userInput == 2 || userInput == 4) {
-        cout << "-- Policy Details --\n";
-        if (toDisplay.policy.policyNumber == 0) {
-            cout << "No active policy at this time.\n";
-            cout << "Please contact a reprsentative to create a new policy\n";
-            cout << "\n";
-        }
-        else {
-            cout << "Insurer Name: " << toDisplay.policy.insurerName << "\n";
-            cout << "Policy Number: " << toDisplay.policy.policyNumber << "\n";
-            cout << "Coverage Type: " << toDisplay.policy.coverageType << "\n";
-            cout << "Premium Amount: $" << toDisplay.policy.preniumAmount << "\n";
-            cout << "Car Make: " << toDisplay.policy.carMake << "\n";
-            cout << "Car Model: " << toDisplay.policy.carModel << "\n";
-            cout << "Car Year: " << toDisplay.policy.carYear << "\n";
-            cout << "License Plate: " << toDisplay.policy.licensePlate << "\n";
-            cout << "\n";
-        }
+    else {
+        cout << "Insurer Name: " << toDisplay.policy.insurerName << "\n";
+        cout << "Policy Number: " << toDisplay.policy.policyNumber << "\n";
+        cout << "Coverage Type: " << toDisplay.policy.coverageType << "\n";
+        cout << "Premium Amount: $" << toDisplay.policy.preniumAmount << "\n";
+        cout << "Car Make: " << toDisplay.policy.carMake << "\n";
+        cout << "Car Model: " << toDisplay.policy.carModel << "\n";
+        cout << "Car Year: " << toDisplay.policy.carYear << "\n";
+        cout << "License Plate: " << toDisplay.policy.licensePlate << "\n";
+        cout << "\n";
     }
-    if (userInput == 3 || userInput == 4) {
-        cout << "-- Current Claim --\n";
-        if (toDisplay.claims.claimNumber == 0) {
-            cout << "No active claim at this time.\n";
-            cout << "\n";
-        }
-        else {
-            cout << "Claim Number: " << toDisplay.claims.claimNumber << "\n";
-            cout << "Date Claim Filed: " << toDisplay.claims.claimDate << "\n";
-            cout << "Incident Date: " << toDisplay.claims.incidentDate << "\n";
-            cout << "Incident Location: " << toDisplay.claims.incidentLocation << "\n";
-            cout << "Incident Description: " << toDisplay.claims.incidentDescription << "\n";
-            cout << "Claim Status: " << toDisplay.claims.claimStatus << "\n";
-            cout << "Claim Amount: $" << toDisplay.claims.claimAmount << "\n";
-            cout << "\n";
-        }
+}
+
+void displayAccountClaim(userDetails& toDisplay) {
+    cout << "-- Current Claim --\n";
+    if (toDisplay.claims.claimNumber == 0) {
+        cout << "No active claim at this time.\n";
+        cout << "\n";
     }
-    else if(userInput == 5) {
-        cout << "\Returning to Previous Menu\n";
-        menuLoop = 0;
+    else {
+        cout << "Claim Number: " << toDisplay.claims.claimNumber << "\n";
+        cout << "Date Claim Filed: " << toDisplay.claims.claimDate << "\n";
+        cout << "Incident Date: " << toDisplay.claims.incidentDate << "\n";
+        cout << "Incident Location: " << toDisplay.claims.incidentLocation << "\n";
+        cout << "Incident Description: " << toDisplay.claims.incidentDescription << "\n";
+        cout << "Claim Status: " << toDisplay.claims.claimStatus << "\n";
+        cout << "Claim Amount: $" << toDisplay.claims.claimAmount << "\n";
+        cout << "\n";
     }
 }
 

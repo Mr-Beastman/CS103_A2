@@ -8,6 +8,7 @@
 //header file that allows us to call functions from a seperate file.
 #include "userManagement.h"
 #include "dataManagement.h"
+#include "menuManagement.h"
 #include "sharedVariables.h"
 
 using namespace std;
@@ -68,68 +69,12 @@ bool verifyLogin(vector<userDetails>& userLogins, string username, string userPa
     return 0;
 }
 
-//display menu for admin users.
-//parameter :
-//returns : none
-void adminLogin(userDetails& currentUser) {
-    bool menuLoop = 1;
-    int userInput;
-    userDetails clientDetails;
-    vector<userDetails> loginCheck;
-    vector<insurancePolices> availablePolices;
-    string username, userDatabase = "userDatabase.txt", policyDatabase ="policyDatabase.txt";
-    
-    while (menuLoop) {
-        cout << "\n===== Staff Portal ====\n";
-
-        cout << "1. Register New Client\n";
-        cout << "2. Search for Client\n";
-        cout << "3. Generate Reports\n";
-        cout << "4. Logout\n";
-        cout << "Selection: ";
-
-        userInput = inputValidation();
-        cout << "\n";
-
-        if (userInput == 1) {
-            cout << "\nCreating a new account\n";
-            loginCheck = getLogins(userDatabase);
-            registerUser(loginCheck, clientDetails);
-            addPolicy(availablePolices, clientDetails);
-            storeUserDetails(userDatabase, clientDetails);
-            cout << "\nNew User Created\n";
-            cout << "Returning to Menu\n";
-        }
-        else if (userInput == 2) {
-            cout << "\nEnter clinet's username: ";
-            cin >> username;
-
-            loginCheck = getLogins(userDatabase);
-
-            if (checkLogin(loginCheck, username)) {
-                cout << "\nAccount Found. Loading Details\n";
-                getAccountDetails(userDatabase, clientDetails, username);
-                displayUserData(clientDetails);
-            }
-            else {
-                cout<<"\nInvalid Username\n";
-            }
-        }
-        else if (userInput == 3) {
-            cout << "\nGenerate a report\n";
-        }
-        else if (userInput == 4) {
-            cout << "\nLogging Out and returning to menu\n";
-            menuLoop = 0;
-        }
-    }
-}
-
 
 //Add policy to users account
 //parameters : vector of available polocies and the user to add selection to
 //returns : none
-void addPolicy(vector<insurancePolices>& availablePolices, userDetails& toUpdate) {
+void addPolicy(userDetails& toUpdate) {
+    vector<insurancePolices> availablePolices;
     const string kPolicyDatabase = "policyDatabase.txt";
     int userInput, carYear;
     string carMake, carModel, licensePlate;
@@ -172,43 +117,40 @@ void addPolicy(vector<insurancePolices>& availablePolices, userDetails& toUpdate
     toUpdate.policy.licensePlate = licensePlate;
 }
 
-void addClaim() {
+//add claim detials to a users account.
+//paramters : user struct that is being updated.\
+//returns : none;
+void addClaim(userDetails& toUpdate) {
+    string incidentDate;
+    string incidentLocation;
+    string incidentDescription;
+    string claimStatus;
+    float claimAmount=0.0;
+    
+    toUpdate.claims.claimNumber = generateClaimNum();
+    toUpdate.claims.claimDate = creationDate();
+    toUpdate.claims.claimStatus = "Pending Review";
 
+    //prompting user to enter required information
+    cout << "Please Enter the Date of the incident (dd/mm/yyyy): ";
+    cin >> incidentDate;
+    cin.ignore();
+    cout << "Where did this happen?: ";
+    getline(cin, incidentLocation);
+    cout << "What Happened?: ";
+    getline(cin,incidentDescription);
+    cout << "Claim Amount: $";
+    cin >> claimAmount;
+
+    //populate struct with entered information
+    toUpdate.claims.incidentDate = incidentDate;
+    toUpdate.claims.incidentLocation = incidentLocation;
+    toUpdate.claims.incidentDescription = incidentDescription;
+    toUpdate.claims.claimAmount = claimAmount;
 }
 
+void updateClaim(userDetails& toUpdate) {
 
-
-//function to display user/client menu and features.
-//paramerters : struct containing logged in users details. pntr.
-//returns : void
-void userLogin(userDetails& currentUser) {
-    bool menuLoop = 1;
-    int userInput;
-    string userDatabase = "userDatabase.txt";
-
-    //menu loop for client menu
-    while (menuLoop) {
-        cout << "\n==== Client Portal ====\n";
-        cout << "1. View my Polices\n";
-        cout << "2. View/Update Details\n";
-        cout << "3. Log out\n";
-
-        userInput = inputValidation();
-
-        //selection logic for user input
-        if (userInput == 1) {
-            displayUserData(currentUser);
-        }
-        else if (userInput == 2) {
-            cout << "\nView/update\n";
-            userUpdate(currentUser);
-            storeUpdatedDetails(userDatabase, currentUser);
-        }
-        else if (userInput == 3) {
-            cout << "\nLogging Out and returning to menu\n";
-            menuLoop = 0;
-        }
-    }
 }
 
 void updateInput(int Input, userDetails& currentUser) {

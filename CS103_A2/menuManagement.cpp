@@ -1,0 +1,227 @@
+// **This cpp file contains all menu displays and corrosponding logic**
+
+//included libraries
+#include <iostream>
+#include<fstream>
+#include <sstream>
+#include <string>
+#include <vector>
+
+//header file that allows us to call functions from a seperate file.
+#include "userManagement.h"
+#include "dataManagement.h"
+#include "sharedVariables.h"
+
+using namespace std;
+
+//displays important userdata present in current structure
+//parameters : structure with data to display.
+//returns : none
+void displayDataMenu(userDetails& toDisplay) {
+    int userInput;
+    bool menuLoop = 1;
+
+
+    cout << "Which info do you wish to view?\n";
+    cout << "1. Client Detials\n";
+    cout << "2. Policy Detals\n";
+    cout << "3. Current Claim\n";
+    cout << "4. All Account Info\n";
+    cout << "5. Return to Previous Menu\n";
+    cout << "Selection: ";
+
+    userInput = inputValidation();
+    cout << "\n";
+
+    if (userInput == 1 || userInput == 4) {
+        displayAccountData(toDisplay);
+    }
+    if (userInput == 2 || userInput == 4) {
+        displayAccountPolicy(toDisplay);
+    }
+    if (userInput == 3 || userInput == 4) {
+        displayAccountClaim(toDisplay);
+    }
+    else if (userInput == 5) {
+        cout << "\Returning to Previous Menu\n";
+        menuLoop = 0;
+    }
+}
+
+//menu of claim edits
+//parameters :  pntr to struct of user data to update.
+//returns : none
+void claimsEditMenu(userDetails& toUpdate){
+    int userInput;
+    char yesNoInput;
+    bool menuLoop = 1;
+
+    while (menuLoop == 1) {
+        cout << "\n-- Edit Claims --\n";
+        cout << "Please select an option:\n";
+        cout << "1. Update Current Claim.\n";
+        cout << "2. Create New Claim.\n";
+        cout << "3. Return to Previous Menu\n";
+        cout << "Selection : ";
+        userInput = inputValidation();
+
+        if (userInput == 1) {
+            displayAccountClaim(toUpdate);
+            
+        }
+        else if (userInput == 2) {
+            cout << "\nThis will overwrite current claim details.\n";
+            cout << "Do you wish to proceed (y/n)?: ";
+            cin >> yesNoInput;
+
+            if (tolower(yesNoInput) == 'y') {
+                addClaim(toUpdate);
+            }
+            else if (tolower(yesNoInput) == 'n') {
+                cout << "\nNo changes will be made. Returnting to previous Menu\n";
+            }
+            else {
+                cout << "\nInvalid slection. Returning to previous Menu\n";
+            }
+        }
+        else if (userInput == 3) {
+            cout << "\nReturning to previous menu\n";
+            menuLoop = 0;
+        }
+        else {
+            cout << "\nInvalid Selection. Please Try again\n";
+        }
+    }
+}
+
+//menu for Updating/adding Data
+//parameters: Userdata to adjust
+//returns: none
+void editMenu(userDetails& toUpdate) {
+    const string userDatabase = "userDatabase.txt";
+    bool menuLoop = 1;
+    int userInput;
+
+    while (menuLoop) {
+        cout << "\n1. Update Account Detiails\n";
+        cout << "2. Update Policy Details\n";
+        cout << "3. Update Claim Detials\n";
+        cout << "4. Return to Previous Menu";
+
+        userInput = inputValidation();
+
+        if (userInput == 1) {
+            userUpdate(toUpdate);
+        }
+        else if (userInput == 2) {
+            if (toUpdate.policy.policyNumber == 0) {
+                cout << "\No Policy exists, creating new one.\n";
+                addPolicy(toUpdate);
+                storeUpdatedDetails(userDatabase, toUpdate);
+            }
+        }
+        else if (userInput == 3) {
+            if (toUpdate.claims.claimNumber == 0) {
+                cout << "\No current claim, creating new one.\n";
+                addClaim(toUpdate);
+                storeUpdatedDetails(userDatabase, toUpdate);
+            }
+        }
+        else if (userInput == 4) {
+            cout << "\nReturning to Previous Menu\n";
+            menuLoop = 0;
+        }
+        else {
+            cout << "\nInvalid Seclection. Please Try again.\n";
+        }
+    }
+}
+
+//function to display user/client menu and features.
+//paramerters : struct containing logged in users details. pntr.
+//returns : void
+void userLogin(userDetails& currentUser) {
+    bool menuLoop = 1;
+    int userInput;
+    string userDatabase = "userDatabase.txt";
+
+    //menu loop for client menu
+    while (menuLoop) {
+        cout << "\n==== Client Portal ====\n";
+        cout << "1. View my Account\n";
+        cout << "2. Add/Update Details\n";
+        cout << "3. Log out\n";
+
+        userInput = inputValidation();
+
+        //selection logic for user input
+        if (userInput == 1) {
+            displayDataMenu(currentUser);
+        }
+        else if (userInput == 2) {
+            cout << "\nView/update\n";
+            editMenu(currentUser);
+            storeUpdatedDetails(userDatabase, currentUser);
+        }
+        else if (userInput == 3) {
+            cout << "\nLogging Out and returning to menu\n";
+            menuLoop = 0;
+        }
+    }
+}
+
+//display menu for admin users.
+//parameter :
+//returns : none
+void adminLogin(userDetails& currentUser) {
+    bool menuLoop = 1;
+    int userInput;
+    userDetails clientDetails;
+    vector<userDetails> loginCheck;
+    string username, userDatabase = "userDatabase.txt", policyDatabase = "policyDatabase.txt";
+
+    while (menuLoop) {
+        cout << "\n===== Staff Portal ====\n";
+
+        cout << "1. Register New Client\n";
+        cout << "2. Search for Client\n";
+        cout << "3. Generate Reports\n";
+        cout << "4. Logout\n";
+        cout << "Selection: ";
+
+        userInput = inputValidation();
+        cout << "\n";
+
+        if (userInput == 1) {
+            cout << "\nCreating a new account\n";
+            loginCheck = getLogins(userDatabase);
+            registerUser(loginCheck, clientDetails);
+            addPolicy(clientDetails);
+            storeUserDetails(userDatabase, clientDetails);
+            cout << "\nNew User Created\n";
+            cout << "Returning to Menu\n";
+        }
+        else if (userInput == 2) {
+            cout << "\nEnter clinet's username: ";
+            cin >> username;
+
+            loginCheck = getLogins(userDatabase);
+
+            if (checkLogin(loginCheck, username)) {
+                cout << "\nAccount Found. Loading Details\n";
+                getAccountDetails(userDatabase, clientDetails, username);
+                displayDataMenu(clientDetails);
+            }
+            else {
+                cout << "\nInvalid Username\n";
+            }
+        }
+        else if (userInput == 3) {
+            cout << "\nGenerate a report\n";
+        }
+        else if (userInput == 4) {
+            cout << "\nLogging Out and returning to menu\n";
+            menuLoop = 0;
+        }
+    }
+}
