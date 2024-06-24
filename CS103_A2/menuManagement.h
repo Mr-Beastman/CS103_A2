@@ -7,4 +7,4 @@ using namespace std;
 
 void userLogin(userDetails& currentUser);
 
-void editMenu(userDetails& toUpdate);
+void profileEditMenu(userDetails& toUpdate);

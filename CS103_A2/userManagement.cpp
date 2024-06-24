@@ -69,7 +69,6 @@ bool verifyLogin(vector<userDetails>& userLogins, string username, string userPa
     return 0;
 }
 
-
 //Add policy to users account
 //parameters : vector of available polocies and the user to add selection to
 //returns : none
@@ -125,7 +124,7 @@ void addClaim(userDetails& toUpdate) {
     string incidentLocation;
     string incidentDescription;
     string claimStatus;
-    float claimAmount=0.0;
+    float claimAmount;
     
     toUpdate.claims.claimNumber = generateClaimNum();
     toUpdate.claims.claimDate = creationDate();
@@ -149,8 +148,54 @@ void addClaim(userDetails& toUpdate) {
     toUpdate.claims.claimAmount = claimAmount;
 }
 
+//Provide options for updating an exiting claim
+//parameters : struct of data to be updated
+//returns : none
 void updateClaim(userDetails& toUpdate) {
+    bool menuLoop = 1;
+    int userInput;
+    string incidentUpdate;
+    float monetaryAmount;
 
+    while (menuLoop = 1) {
+        cout << "\nWhich section would you like to update?\n";
+        cout << "1. Incident Date\n";
+        cout << "2. Incident Location\n";
+        cout << "3. Incident Description\n";
+        cout << "4. Claim Amount\n";
+        cout << "5. Return to Previous Menu\n";
+        cout << "Selection: ";
+        userInput = inputValidation();
+
+        if (userInput == 1) {
+            cout << "Please Enter the Date of the incident (dd/mm/yyyy): ";
+            cin >> incidentUpdate;
+            cin.ignore();
+            toUpdate.claims.incidentDate = incidentUpdate;
+        }
+        else if (userInput == 2) {
+            cout << "Where did this happen?: ";
+            getline(cin, incidentUpdate);
+            toUpdate.claims.incidentLocation = incidentUpdate;
+        }
+        else if (userInput == 3) {
+            cout << "What happened?: ";
+            getline(cin, incidentUpdate);
+            toUpdate.claims.incidentLocation = incidentUpdate;
+        }
+        else if (userInput == 4) {
+            cout << "Claim Amount: $";
+            cin >> monetaryAmount;
+            toUpdate.claims.claimAmount = monetaryAmount;
+        }
+        else if (userInput == 5) {
+            cout << "\nReturning to previous Menu\n";
+            menuLoop = 0;
+        }
+        else {
+            cout << "\nInvalid Selection Please Try Again";
+        }
+    }
 }
 
 void updateInput(int Input, userDetails& currentUser) {

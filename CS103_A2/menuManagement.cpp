@@ -43,7 +43,7 @@ void displayDataMenu(userDetails& toDisplay) {
         displayAccountClaim(toDisplay);
     }
     else if (userInput == 5) {
-        cout << "\Returning to Previous Menu\n";
+        cout << "\nReturning to Previous Menu\n";
         menuLoop = 0;
     }
 }
@@ -97,7 +97,7 @@ void claimsEditMenu(userDetails& toUpdate){
 //menu for Updating/adding Data
 //parameters: Userdata to adjust
 //returns: none
-void editMenu(userDetails& toUpdate) {
+void profileEditMenu(userDetails& toUpdate) {
     const string userDatabase = "userDatabase.txt";
     bool menuLoop = 1;
     int userInput;
@@ -115,14 +115,14 @@ void editMenu(userDetails& toUpdate) {
         }
         else if (userInput == 2) {
             if (toUpdate.policy.policyNumber == 0) {
-                cout << "\No Policy exists, creating new one.\n";
+                cout << "\nNo Policy exists, creating new one.\n";
                 addPolicy(toUpdate);
                 storeUpdatedDetails(userDatabase, toUpdate);
             }
         }
         else if (userInput == 3) {
             if (toUpdate.claims.claimNumber == 0) {
-                cout << "\No current claim, creating new one.\n";
+                cout << "\nNo current claim, creating new one.\n";
                 addClaim(toUpdate);
                 storeUpdatedDetails(userDatabase, toUpdate);
             }
@@ -160,7 +160,7 @@ void userLogin(userDetails& currentUser) {
         }
         else if (userInput == 2) {
             cout << "\nView/update\n";
-            editMenu(currentUser);
+            profileEditMenu(currentUser);
             storeUpdatedDetails(userDatabase, currentUser);
         }
         else if (userInput == 3) {
@@ -179,6 +179,7 @@ void adminLogin(userDetails& currentUser) {
     userDetails clientDetails;
     vector<userDetails> loginCheck;
     string username, userDatabase = "userDatabase.txt", policyDatabase = "policyDatabase.txt";
+
 
     while (menuLoop) {
         cout << "\n===== Staff Portal ====\n";
