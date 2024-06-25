@@ -106,8 +106,9 @@ void profileEditMenu(userDetails& toUpdate) {
     while (menuLoop) {
         cout << "\n1. Update Account Detiails\n";
         cout << "2. Update Policy Details\n";
-        cout << "3. Update Claim Detials\n";
-        cout << "4. Return to Previous Menu";
+        cout << "3. Update Claim Details\n";
+        cout << "4. Return to Previous Menu\n";
+        cout << "Selection: ";
 
         userInput = inputValidation();
 
@@ -168,7 +169,7 @@ void userLogin(userDetails& currentUser) {
             displayDataMenu(currentUser);
         }
         else if (userInput == 2) {
-            cout << "\nView/update\n";
+            cout << "\nAdd/Update\n";
             profileEditMenu(currentUser);
             storeUpdatedDetails(userDatabase, currentUser);
         }
@@ -186,8 +187,8 @@ void viewUser(userDetails& userDetails) {
 
     while (menuLoop == 1) {
         cout << "\n==== Options for Account: " << userDetails.username << " ====\n";
-        cout << "1. View Account Detials\n";
-        cout << "2. Edit Account Detials\n";
+        cout << "1. View Account Details\n";
+        cout << "2. Edit Account Details\n";
         cout << "3. Exit user account\n";
         cout << "Selection: ";
         userInput = inputValidation();
@@ -226,7 +227,7 @@ void adminLogin(userDetails& currentUser) {
         cout << "\n===== Staff Portal ====\n";
 
         cout << "1. Register New Client\n";
-        cout << "2. Search for Client\n";
+        cout << "2. Client Information\n";
         cout << "3. Generate Reports\n";
         cout << "4. Logout\n";
         cout << "Selection: ";
@@ -246,7 +247,7 @@ void adminLogin(userDetails& currentUser) {
             cout << "Returning to Menu\n";
         }
         else if (userInput == 2) {
-            cout << "\nEnter clinet's username: ";
+            cout << "\nEnter client's username: ";
             cin >> username;
             transform(username.begin(), username.end(), username.begin(), ::tolower);
 

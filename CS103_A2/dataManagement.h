@@ -16,6 +16,8 @@ void displayAccountPolicy(userDetails& toDisplay);
 
 void displayAccountClaim(userDetails& toDisplay);
 
+void displayDataMenu(userDetails& toDisplay);
+
 void storeUserDetails(string userDatabase, userDetails& newUser);
 
 void storeUpdatedDetails(string userDatabase, userDetails& userUpdates);

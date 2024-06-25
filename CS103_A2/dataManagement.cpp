@@ -109,6 +109,8 @@ void displayAccountData(userDetails& toDisplay) {
     cout << "Contact Number : " << toDisplay.contactNumber << "\n";
     cout << "Email Address : " << toDisplay.emailAddress << "\n";
     cout << "\n";
+
+    displayDataMenu(toDisplay);
 }
 
 //function to display policy details in console.
@@ -131,6 +133,7 @@ void displayAccountPolicy(userDetails& toDisplay) {
         cout << "License Plate: " << toDisplay.policy.licensePlate << "\n";
         cout << "\n";
     }
+    displayDataMenu(toDisplay);
 }
 
 //function to display claim details in console.
@@ -152,6 +155,7 @@ void displayAccountClaim(userDetails& toDisplay) {
         cout << "Claim Amount: $" << toDisplay.claims.claimAmount << "\n";
         cout << "\n";
     }
+    displayDataMenu(toDisplay);
 }
 
 //writes user details to the "userDatabase"
