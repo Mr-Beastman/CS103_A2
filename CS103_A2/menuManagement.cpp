@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 //header file that allows us to call functions from a seperate file.
 #include "userManagement.h"
@@ -112,6 +113,7 @@ void profileEditMenu(userDetails& toUpdate) {
 
         if (userInput == 1) {
             userUpdate(toUpdate);
+            storeUpdatedDetails(userDatabase, toUpdate);
         }
         else if (userInput == 2) {
             if (toUpdate.policy.policyNumber == 0) {
@@ -177,7 +179,7 @@ void adminLogin(userDetails& currentUser) {
     bool menuLoop = 1;
     int userInput;
     userDetails clientDetails;
-    vector<userDetails> loginCheck;
+    vector<userDetails> accountCheck;
     string username, userDatabase = "userDatabase.txt", policyDatabase = "policyDatabase.txt";
 
 
@@ -194,9 +196,12 @@ void adminLogin(userDetails& currentUser) {
         cout << "\n";
 
         if (userInput == 1) {
+            //force struct to default constructor
+            clientDetails = userDetails();
+
             cout << "\nCreating a new account\n";
-            loginCheck = getLogins(userDatabase);
-            registerUser(loginCheck, clientDetails);
+            accountCheck = getLogins(userDatabase);
+            registerUser(accountCheck, clientDetails);
             addPolicy(clientDetails);
             storeUserDetails(userDatabase, clientDetails);
             cout << "\nNew User Created\n";
@@ -205,10 +210,12 @@ void adminLogin(userDetails& currentUser) {
         else if (userInput == 2) {
             cout << "\nEnter clinet's username: ";
             cin >> username;
+            transform(username.begin(), username.end(), username.begin(), ::tolower);
 
-            loginCheck = getLogins(userDatabase);
 
-            if (checkLogin(loginCheck, username)) {
+            accountCheck = getLogins(userDatabase);
+
+            if (checkLogin(accountCheck, username)) {
                 cout << "\nAccount Found. Loading Details\n";
                 getAccountDetails(userDatabase, clientDetails, username);
                 displayDataMenu(clientDetails);

@@ -1,8 +1,9 @@
 //included libraries
 #include <iostream>
-#include<fstream>
+#include <fstream>
 #include <sstream>
 #include <string>
+#include <algorithm>
 #include <vector>
 
 //header file that allows us to call functions from a seperate file.
@@ -23,6 +24,8 @@ void registerUser(vector<userDetails>& userLogins, userDetails& newUser) {
     do {
         cout << "Enter Username: ";
         cin >> newUser.username;
+
+        transform(newUser.username.begin(), newUser.username.end(), newUser.username.begin(), ::tolower);
 
         if (checkLogin(userLogins, newUser.username)) {
             cout << "Username already taken, please enter a new one.\n";
@@ -67,6 +70,86 @@ bool verifyLogin(vector<userDetails>& userLogins, string username, string userPa
         }
     }
     return 0;
+}
+
+//set account status to locked.
+//paremeters : username to be checked.
+//retutns : none
+void lockAccount(string username){
+    const string kUserDatabase = "userDatabase.txt";
+    userDetails toLock;
+
+    getAccountDetails(kUserDatabase, toLock,username);
+
+    toLock.accountStatus = "locked";
+    storeUpdatedDetails(kUserDatabase,toLock);
+}
+
+//check if account is locked or active
+//parameters : username to check
+//returns : 0 if locked 1 if active.
+bool checkAccountStatus(string username) {
+    const string kUserDatabase = "userDatabase.txt";
+    userDetails toCheck;
+
+    getAccountDetails(kUserDatabase, toCheck, username);
+    
+    if (toCheck.accountStatus == "locked") {
+        return 0;
+    }
+    else {
+        return 1;
+    }
+}
+
+//Used to prompt user log in and verify details.
+//parameters: none
+//returns : string of verified username or empty string.
+string loginSecurity() {
+    const string kUserDatabase = "userDatabase.txt";
+    string username, password;
+    vector<userDetails> accountCheck;
+    const int kMaxAttempts = 3;
+    int loginAttempts = 0;
+    bool accountActive;
+
+    cout << "Enter Username: ";
+    cin >> username;
+    
+    accountCheck = getLogins(kUserDatabase);
+
+    transform(username.begin(), username.end(), username.begin(), ::tolower);
+
+    if (!checkLogin(accountCheck,username)) {
+        cout << "\nUsername not in system. Please create new accout or contact admin.\n";
+        cout << "Returning to Previous Menu\n";
+        return{};
+    }
+
+    if (!checkAccountStatus(username)) {
+        cout << "\nThis account has been locked. Please contact admin team.\n";
+        cout << "Returning to Previous Menu\n";
+        return{};
+    }
+
+    while (loginAttempts < kMaxAttempts) {
+        cout << "Enter Password: ";
+        cin >> password;
+
+        if (verifyLogin(accountCheck, username, password)) {
+            cout << "\nLogin Succesfull";
+            return username;
+        }
+        else {
+            cout << "\nIncorrect Password, Please try again\n";
+            loginAttempts++;
+        }
+    }
+
+    cout << "Max number of attempts reached. This account has now been locked.\n";
+    cout << "Please Contact Admin to unlock.\n";
+    lockAccount(username);
+    return{};
 }
 
 //Add policy to users account
@@ -148,7 +231,7 @@ void addClaim(userDetails& toUpdate) {
     toUpdate.claims.claimAmount = claimAmount;
 }
 
-//Provide options for updating an exiting claim
+//Provide options for updating an existing claim
 //parameters : struct of data to be updated
 //returns : none
 void updateClaim(userDetails& toUpdate) {

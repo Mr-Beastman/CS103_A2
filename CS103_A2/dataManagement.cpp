@@ -96,6 +96,9 @@ int generateClaimNum() {
     return(dis(gen));
 }
 
+//function to display account details in console.
+//parameters : userDetails Structure with info to display
+//returns : none
 void displayAccountData(userDetails& toDisplay) {
     cout << "-- Client Details --\n";
     cout << "Username: " << toDisplay.username << "\n";
@@ -108,6 +111,10 @@ void displayAccountData(userDetails& toDisplay) {
     cout << "\n";
 }
 
+
+//function to display policy details in console.
+//parameters : userDetails Structure with info to display
+//returns : none
 void displayAccountPolicy(userDetails& toDisplay) {
     cout << "-- Policy Details --\n";
     if (toDisplay.policy.policyNumber == 0) {
@@ -128,6 +135,9 @@ void displayAccountPolicy(userDetails& toDisplay) {
     }
 }
 
+//function to display claim details in console.
+//parameters : userDetails Structure with info to display
+//returns : none
 void displayAccountClaim(userDetails& toDisplay) {
     cout << "-- Current Claim --\n";
     if (toDisplay.claims.claimNumber == 0) {

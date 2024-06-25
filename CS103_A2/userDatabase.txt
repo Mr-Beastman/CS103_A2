@@ -1,12 +1,14 @@
 
-Admin,Admin,admin,active,TestAdmin,Testerson,202020,Admin@insurance.com,blank,0,blank,0,blank,blank,0,blank,0,blank,blank,blank,blank,blank,0
-TestUser,user,user,active,Tester,TestyTest,2020,Test@user.com,Pro Auto Defense,7936,Third party fire and theft,1200.45,nissan,wingroad,1991,LH789,271,24/06/24,16/06/2024,143 crash street,I flipped my car into a ice cream stand.,Pending Review,1e+06
+admin,admin,admin,locked,TestAdmin,Testerson,202020,Admin@insurance.com,blank,0,blank,0,blank,blank,0,blank,0,blank,blank,blank,blank,blank,0
 
 
 
 
 
 
+testuser,user,user,active,Kack,TestyTest,2020,Test@user.com,Pro Auto Defense,7936,Third party fire and theft,1200.45,nissan,wingroad,1991,LH789,271,24/06/24,16/06/2024,143 crash street,I flipped my car into a ice cream stand.,Pending Review,0
 
-
-
+a,a,user,active,a,a,20,a,Insure Supreme,8031,Comprehensive,1500.75,nissan,wingroad,2017,ahdahsd,271,24/06/24,16/06/2024,143 crash street,I flipped my car into a ice cream stand.,Pending Review,0
+b,b,user,active,b,b,2,e,Crash and Pay,3613,Third party,850.3,nis,ma,1,as,0,blank,blank,blank,blank,blank,0
+v,v,user,active,v,v,0,v,Crash and Pay,3795,Third party,850.3,honda,din,15,hsdhfs,0,blank,blank,blank,blank,blank,0
+testcaps,Av,user,active,a,a,2,a,blank,0,blank,0,blank,blank,0,blank,0,blank,blank,blank,blank,blank,0

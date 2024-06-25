@@ -11,6 +11,10 @@ bool verifyLogin(vector<userDetails>& userLogins, string username, string userPa
 
 bool checkLogin(vector<userDetails>& userLogins, string username);
 
+string loginSecurity();
+
+void lockAccount(string username);
+
 void adminLogin(userDetails& currentUser);
 
 void addPolicy(userDetails& toUpdate);

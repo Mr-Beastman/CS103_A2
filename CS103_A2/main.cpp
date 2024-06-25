@@ -34,56 +34,23 @@ int main() {
 
         //if loop for navigating menu
         if (userInput == 1) {
-            //collect current logins and corrosponding passwords.
-            loginCheck = getLogins(userDatabase);
-            
-            while (loginAttempts < kMaxAttempts && !sercurityPass) {
+            username=loginSecurity();
 
-                cout << "\nChoose to login\n";  //testing place holder
-                cout << "Enter Username : ";
-                cin >> username;
-                cout << "Enter Password : ";
-                cin >> userPassword;
+            if (!username.empty()) {
+                //populate currentUser variable with account details mathcing the login.
+                getAccountDetails(userDatabase, currentUser, username);
 
-                //checking username exists
-                if (checkLogin(loginCheck, username)) {
-
-                    //checking if entered details are correct
-                    if (verifyLogin(loginCheck, username, userPassword)) {
-                        cout << "\nlog in success\n";
-
-                        sercurityPass = 1;
-                        //populate currentUser variable with account details mathcing the login.
-                        getAccountDetails(userDatabase, currentUser, username);
-
-                        //check user type and open accordingly
-                        if (currentUser.userType == "user") {
-                            userLogin(currentUser);
-                        }
-                        else if (currentUser.userType == "admin") {
-                            adminLogin(currentUser);
-                        }
-                        else {
-                            //error message incase of data fault
-                            cout << "User Type not defined. Please contact admin team";
-                        }
-                    }
-                    else {
-                        //notify user of incorrect login details an records failed attempt
-                        cout << "\nIncorrect Username or Password. Please try again.\n";
-                        loginAttempts++;
-                    }
+                //check user type and open accordingly
+                if (currentUser.userType == "user") {
+                    userLogin(currentUser);
+                }
+                else if (currentUser.userType == "admin") {
+                    adminLogin(currentUser);
                 }
                 else {
-                    //notify uesrname not found.
-                    cout << "\nError: Username " << username << " does not exist.\n";
+                    //error message incase of data fault
+                    cout << "User Type not defined. Please contact admin team";
                 }
-            }
-
-            //if max attepts reached and security not cleared terminate program.
-            if (!sercurityPass) {
-                cout << "\nToo many attempts made. Exiting Program.\n";
-                return 0;
             }
         }
         else if (userInput == 2) {
