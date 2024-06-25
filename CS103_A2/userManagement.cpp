@@ -137,7 +137,7 @@ string loginSecurity() {
         cin >> password;
 
         if (verifyLogin(accountCheck, username, password)) {
-            cout << "\nLogin Succesfull";
+            cout << "\nLogin Succesfull\n";
             return username;
         }
         else {
@@ -240,7 +240,7 @@ void updateClaim(userDetails& toUpdate) {
     string incidentUpdate;
     float monetaryAmount;
 
-    while (menuLoop = 1) {
+    while (menuLoop == 1) {
         cout << "\nWhich section would you like to update?\n";
         cout << "1. Incident Date\n";
         cout << "2. Incident Location\n";

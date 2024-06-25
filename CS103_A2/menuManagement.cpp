@@ -22,7 +22,7 @@ void displayDataMenu(userDetails& toDisplay) {
     int userInput;
     bool menuLoop = 1;
 
-
+    cout << "\n==== View Account Information ====\n";
     cout << "Which info do you wish to view?\n";
     cout << "1. Client Detials\n";
     cout << "2. Policy Detals\n";
@@ -121,11 +121,18 @@ void profileEditMenu(userDetails& toUpdate) {
                 addPolicy(toUpdate);
                 storeUpdatedDetails(userDatabase, toUpdate);
             }
+            else {
+                
+            }
         }
         else if (userInput == 3) {
             if (toUpdate.claims.claimNumber == 0) {
                 cout << "\nNo current claim, creating new one.\n";
                 addClaim(toUpdate);
+                storeUpdatedDetails(userDatabase, toUpdate);
+            }
+            else {
+                updateClaim(toUpdate);
                 storeUpdatedDetails(userDatabase, toUpdate);
             }
         }
@@ -172,6 +179,38 @@ void userLogin(userDetails& currentUser) {
     }
 }
 
+void viewUser(userDetails& userDetails) {
+    const string kUserDatabase = "userDatabase.txt";
+    bool menuLoop = 1;
+    int userInput;
+
+    while (menuLoop == 1) {
+        cout << "\n==== Options for Account: " << userDetails.username << " ====\n";
+        cout << "1. View Account Detials\n";
+        cout << "2. Edit Account Detials\n";
+        cout << "3. Exit user account\n";
+        cout << "Selection: ";
+        userInput = inputValidation();
+
+        if (userInput == 1) {
+            displayDataMenu(userDetails);
+        }
+        else if (userInput == 2) {
+            profileEditMenu(userDetails);
+            storeUpdatedDetails(kUserDatabase, userDetails);
+        }
+        else if (userInput == 3) {
+            cout << "\nReturning to Previous Menu\n";
+            menuLoop = 0;
+        }
+        else {
+            cout << "\nInvalid Selection\n";
+        }
+    }
+
+    
+}
+
 //display menu for admin users.
 //parameter :
 //returns : none
@@ -193,7 +232,6 @@ void adminLogin(userDetails& currentUser) {
         cout << "Selection: ";
 
         userInput = inputValidation();
-        cout << "\n";
 
         if (userInput == 1) {
             //force struct to default constructor
@@ -212,23 +250,22 @@ void adminLogin(userDetails& currentUser) {
             cin >> username;
             transform(username.begin(), username.end(), username.begin(), ::tolower);
 
-
             accountCheck = getLogins(userDatabase);
 
             if (checkLogin(accountCheck, username)) {
-                cout << "\nAccount Found. Loading Details\n";
+                cout << "Account Found. Loading Options\n";
                 getAccountDetails(userDatabase, clientDetails, username);
-                displayDataMenu(clientDetails);
+                viewUser(clientDetails);
             }
             else {
-                cout << "\nInvalid Username\n";
+                cout << "Invalid Username\n";
             }
         }
         else if (userInput == 3) {
             cout << "\nGenerate a report\n";
         }
         else if (userInput == 4) {
-            cout << "\nLogging Out and returning to menu\n";
+            cout << "\nLogging Out and Returning to Main Menu\n";
             menuLoop = 0;
         }
     }

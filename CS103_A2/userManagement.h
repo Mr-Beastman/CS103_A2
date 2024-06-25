@@ -15,6 +15,8 @@ string loginSecurity();
 
 void lockAccount(string username);
 
+void updateClaim(userDetails& toUpdate);
+
 void adminLogin(userDetails& currentUser);
 
 void addPolicy(userDetails& toUpdate);

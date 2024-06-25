@@ -34,6 +34,7 @@ int main() {
 
         //if loop for navigating menu
         if (userInput == 1) {
+
             username=loginSecurity();
 
             if (!username.empty()) {
@@ -60,7 +61,8 @@ int main() {
             loginCheck = getLogins(userDatabase);
             registerUser(loginCheck,currentUser);
             storeUserDetails(userDatabase, currentUser);
-            cout << "\nNew user created";
+            cout << "\nNew user created\n";
+            cout << "Returning to Previous Menu\n";
         }
         else if (userInput == 3) {
             cout << "\nChoose to exit\n";

@@ -111,7 +111,6 @@ void displayAccountData(userDetails& toDisplay) {
     cout << "\n";
 }
 
-
 //function to display policy details in console.
 //parameters : userDetails Structure with info to display
 //returns : none
@@ -119,7 +118,6 @@ void displayAccountPolicy(userDetails& toDisplay) {
     cout << "-- Policy Details --\n";
     if (toDisplay.policy.policyNumber == 0) {
         cout << "No active policy at this time.\n";
-        cout << "Please contact a reprsentative to create a new policy\n";
         cout << "\n";
     }
     else {
@@ -289,6 +287,8 @@ void getAccountDetails(string userDatabase, userDetails& user, string searchUser
             getline(ss, user.claims.incidentLocation, ',');
             getline(ss, user.claims.incidentDescription, ',');
             getline(ss, user.claims.claimStatus, ',');
+            ss >> user.claims.claimAmount;
+            ss.ignore();
         }
     }
 }
