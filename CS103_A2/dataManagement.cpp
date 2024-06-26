@@ -49,7 +49,7 @@ int inputValidationInt() {
 }
 
 //function to confirm user input is a valid for y/n.
-//paremeters : none
+//parameters : none
 //returns : 1 true, 0 false
 bool inputValidationYN() {
     string userInput;
@@ -212,7 +212,7 @@ void storeUserDetails(string userDatabase, userDetails& newUser) {
 }
 
 //overwrite existing userdetails with ones currently stored in userDetails struct
-//parameters : file name to change, update userdeatils struct.
+//parameters : file name to change, update userdetails struct.
 //returns : none 
 void storeUpdatedDetails(userDetails& userUpdates) {
     const string kUserDatabase="userDatabase.txt";
@@ -315,7 +315,7 @@ void getAccountDetails(string userDatabase, userDetails& user, string searchUser
 }
 
 //get policy details from policyDatabase.txt
-//parameter : database filenmae, vector of struct to update with information
+//parameter : database filename, vector of struct to update with information
 //retuns : none
 void getPolicyDetails(string policyDatabase, vector<insurancePolices>& policies) {
     ifstream file(policyDatabase);
@@ -410,14 +410,14 @@ void deleteAccount(string searchUserName) {
 }
 
 //Deletes claim info by resetting structure to default constructor
-//parametrs : userDetails struct to update
+//parameters : userDetails struct to update
 //returns : none
 void deleteClaim(userDetails& toUpdate) {
     toUpdate.claims = claimsDetails{};
 }
 
 //Deletes policy info by resetting structure to default constructor
-//parametrs : userDetails struct to update
+//parameters : userDetails struct to update
 //returns : none
 void deletePolicy(userDetails& toUpdate) {
     toUpdate.policy = policyDetails{};
