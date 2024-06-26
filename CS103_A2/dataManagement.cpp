@@ -19,25 +19,24 @@ using namespace std;
 //function to confirm user input is a valid type. eg not char/float.
 //parameter: None
 //returns: integer
-int inputValidation() {
+int inputValidationInt() {
     float userInput;
     bool valid;
     
     do {
+        cout << "Selection : ";
         cin >> userInput;
 
         while (cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "\nInvalid input. Please enter a valid optio\n";
-            cout << "New Selection: ";
+            cout << "\nInvalid input. Please enter a valid option\n";
             cin >> userInput;
         }
 
         if (floor(userInput) != userInput) {
             valid = 0;
             cout << "\nInvalid input. Please enter a valid option\n";
-            cout<<"New Selection: ";
         }
         else {
             valid = 1;
@@ -49,6 +48,28 @@ int inputValidation() {
     return userInput;
 }
 
+//function to confirm user input is a valid for y/n.
+//paremeters : none
+//returns : 1 true, 0 false
+bool inputValidationYN() {
+    string userInput;
+
+    while (true) {
+        cout << "\nSelection: ";
+        cin.ignore();
+        getline(cin, userInput);
+
+        if (tolower(userInput[0]) == 'y') {
+            return 1;
+        }
+        else if (tolower(userInput[0]) == 'n') {
+            return 0;
+        }
+        else {
+            cout << "\n Invalid Selection. Please try again";
+        }
+    }
+}
 
 //get todays date for recording creation dates.
 //parameters : none
@@ -109,8 +130,6 @@ void displayAccountData(userDetails& toDisplay) {
     cout << "Contact Number : " << toDisplay.contactNumber << "\n";
     cout << "Email Address : " << toDisplay.emailAddress << "\n";
     cout << "\n";
-
-    displayDataMenu(toDisplay);
 }
 
 //function to display policy details in console.
@@ -133,7 +152,6 @@ void displayAccountPolicy(userDetails& toDisplay) {
         cout << "License Plate: " << toDisplay.policy.licensePlate << "\n";
         cout << "\n";
     }
-    displayDataMenu(toDisplay);
 }
 
 //function to display claim details in console.
@@ -155,7 +173,6 @@ void displayAccountClaim(userDetails& toDisplay) {
         cout << "Claim Amount: $" << toDisplay.claims.claimAmount << "\n";
         cout << "\n";
     }
-    displayDataMenu(toDisplay);
 }
 
 //writes user details to the "userDatabase"
@@ -197,9 +214,9 @@ void storeUserDetails(string userDatabase, userDetails& newUser) {
 //overwrite existing userdetails with ones currently stored in userDetails struct
 //parameters : file name to change, update userdeatils struct.
 //returns : none 
-void storeUpdatedDetails(string userDatabase, userDetails& userUpdates) {
-    
-    ifstream infile(userDatabase);
+void storeUpdatedDetails(userDetails& userUpdates) {
+    const string kUserDatabase="userDatabase.txt";
+    ifstream infile(kUserDatabase);
     vector<string> lines;
     string line,username;
 
@@ -242,7 +259,7 @@ void storeUpdatedDetails(string userDatabase, userDetails& userUpdates) {
 
     infile.close();
     
-    ofstream outfile(userDatabase);
+    ofstream outfile(kUserDatabase);
     for (auto & line : lines) {
         outfile << line << endl;
     }
@@ -363,4 +380,45 @@ vector<userDetails> getLogins(string userDatabase) {
         usernames.push_back(user);
     }
     return usernames;
+}
+
+//delete line containing userdata from userDatabase.txt
+//parameters : username to delete
+//returns : none
+void deleteAccount(string searchUserName) {
+    const string kUserDatabase="userDatabase.txt";
+    ifstream inputDatabase(kUserDatabase);
+    vector<string>lines;
+    string user, line;
+
+    while (getline(inputDatabase, line)) {
+        istringstream ss(line);
+        if (getline(ss, user, ',')) {
+            if (user != searchUserName) {
+                lines.push_back(line);
+            }
+        }
+    }
+    inputDatabase.close();
+
+    ofstream outputDatabase(kUserDatabase);
+    for (size_t i = 0; i < lines.size(); ++i) {
+        outputDatabase << lines[i] << '\n';
+    }
+
+    outputDatabase.close();
+}
+
+//Deletes claim info by resetting structure to default constructor
+//parametrs : userDetails struct to update
+//returns : none
+void deleteClaim(userDetails& toUpdate) {
+    toUpdate.claims = claimsDetails{};
+}
+
+//Deletes policy info by resetting structure to default constructor
+//parametrs : userDetails struct to update
+//returns : none
+void deletePolicy(userDetails& toUpdate) {
+    toUpdate.policy = policyDetails{};
 }

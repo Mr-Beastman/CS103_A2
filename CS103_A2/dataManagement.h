@@ -2,7 +2,9 @@
 #include<vector>
 #include"sharedVariables.h"
 
-int inputValidation();
+int inputValidationInt();
+
+bool inputValidationYN();
 
 int generatePolicyNum();
 
@@ -20,7 +22,7 @@ void displayDataMenu(userDetails& toDisplay);
 
 void storeUserDetails(string userDatabase, userDetails& newUser);
 
-void storeUpdatedDetails(string userDatabase, userDetails& userUpdates);
+void storeUpdatedDetails(userDetails& userUpdates);
 
 void getAccountDetails(string userDatabase, userDetails& user, string searchUser);
 
@@ -31,3 +33,9 @@ void displayPolicyDetails(insurancePolices policy);
 void userUpdate(userDetails& currentUser);
 
 vector<userDetails> getLogins(string userDatabase);
+
+void deleteAccount(string searchUserName);
+
+void deleteClaim(userDetails& toUpdate);
+
+void deletePolicy(userDetails& toUpdate);

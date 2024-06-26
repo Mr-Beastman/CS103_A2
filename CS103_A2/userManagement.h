@@ -17,8 +17,14 @@ void lockAccount(string username);
 
 void updateClaim(userDetails& toUpdate);
 
+void updatePolicy(userDetails& toUpdate);
+
 void adminLogin(userDetails& currentUser);
+
+void enterCarDetails(userDetails& toUpdate);
 
 void addPolicy(userDetails& toUpdate);
 
 void addClaim(userDetails& toUpdate);
+
+bool deleteConfirmation();

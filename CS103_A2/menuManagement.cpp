@@ -21,31 +21,32 @@ using namespace std;
 void displayDataMenu(userDetails& toDisplay) {
     int userInput;
     bool menuLoop = 1;
+    
+    while (menuLoop) {
+        cout << "\n==== View Account Information ====\n";
+        cout << "Which info do you wish to view?\n";
+        cout << "1. Client Details\n";
+        cout << "2. Policy Details\n";
+        cout << "3. Current Claim\n";
+        cout << "4. All Account Info\n";
+        cout << "5. Return to Previous Menu\n";
 
-    cout << "\n==== View Account Information ====\n";
-    cout << "Which info do you wish to view?\n";
-    cout << "1. Client Detials\n";
-    cout << "2. Policy Detals\n";
-    cout << "3. Current Claim\n";
-    cout << "4. All Account Info\n";
-    cout << "5. Return to Previous Menu\n";
-    cout << "Selection: ";
+        userInput = inputValidationInt();
+        cout << "\n";
 
-    userInput = inputValidation();
-    cout << "\n";
-
-    if (userInput == 1 || userInput == 4) {
-        displayAccountData(toDisplay);
-    }
-    if (userInput == 2 || userInput == 4) {
-        displayAccountPolicy(toDisplay);
-    }
-    if (userInput == 3 || userInput == 4) {
-        displayAccountClaim(toDisplay);
-    }
-    else if (userInput == 5) {
-        cout << "\nReturning to Previous Menu\n";
-        menuLoop = 0;
+        if (userInput == 1 || userInput == 4) {
+            displayAccountData(toDisplay);
+        }
+        if (userInput == 2 || userInput == 4) {
+            displayAccountPolicy(toDisplay);
+        }
+        if (userInput == 3 || userInput == 4) {
+            displayAccountClaim(toDisplay);
+        }
+        else if (userInput == 5) {
+            cout << "\nReturning to Previous Menu\n";
+            menuLoop = 0;
+        }
     }
 }
 
@@ -54,35 +55,93 @@ void displayDataMenu(userDetails& toDisplay) {
 //returns : none
 void claimsEditMenu(userDetails& toUpdate){
     int userInput;
-    char yesNoInput;
     bool menuLoop = 1;
 
+    //if there is not policy there cant be a claim.
+    if (toUpdate.policy.policyNumber == 0) {
+        cout << "No Active Policy at this time. Please apply before making claims\n";
+        cout << "Returning to previous menu\n";
+    }
+
+    //checks if there is existing claim. prompts creation if not.
+    if (toUpdate.claims.claimNumber == 0) {
+        cout << "\nNo claim for current account.\n";
+        cout << "Would you like to create one? (y/n)\n";
+        if (inputValidationYN) {
+            addClaim(toUpdate);
+        }
+        else {
+            cout << "\nNo Claim to Edit. Returning to previous menu\n";
+            return;
+        }
+    }
+
+    //display options for claim
     while (menuLoop == 1) {
         cout << "\n-- Edit Claims --\n";
         cout << "Please select an option:\n";
-        cout << "1. Update Current Claim.\n";
-        cout << "2. Create New Claim.\n";
+        cout << "1. Update Claim\n";
+        cout << "2. Delete Claim\n";
         cout << "3. Return to Previous Menu\n";
-        cout << "Selection : ";
-        userInput = inputValidation();
+
+        userInput = inputValidationInt();
 
         if (userInput == 1) {
-            displayAccountClaim(toUpdate);
+            updateClaim(toUpdate);
             
         }
         else if (userInput == 2) {
-            cout << "\nThis will overwrite current claim details.\n";
-            cout << "Do you wish to proceed (y/n)?: ";
-            cin >> yesNoInput;
+            if (deleteConfirmation()) {
+                deleteClaim(toUpdate);
+                storeUpdatedDetails(toUpdate);
+            }
+        }
+        else if (userInput == 3) {
+            cout << "\nReturning to previous menu\n";
+            menuLoop = 0;
+        }
+        else {
+            cout << "\nInvalid Selection. Please Try again\n";
+        }
+    }
+}
 
-            if (tolower(yesNoInput) == 'y') {
-                addClaim(toUpdate);
-            }
-            else if (tolower(yesNoInput) == 'n') {
-                cout << "\nNo changes will be made. Returnting to previous Menu\n";
-            }
-            else {
-                cout << "\nInvalid slection. Returning to previous Menu\n";
+//menu for Updating/adding policy information
+//parameters: Userdata to adjust
+//returns: none
+void policyEditMenu(userDetails& toUpdate) {
+    int userInput;
+    bool menuLoop = 1;
+
+    //checks if there is existing policy and prompts creation if not.
+    if (toUpdate.policy.policyNumber == 0) {
+        cout << "No Active Policy at this time.\n";
+        cout << "Would you like to create one? (y/n)\n";
+        if (inputValidationYN) {
+            addPolicy(toUpdate);
+        }
+        else {
+            cout << "\nNo Policy to Edit. Returning to previous menu\n";
+            return;
+        }
+    }
+
+    //display options on editing the existing policy.
+    while (menuLoop == 1) {
+        cout << "\n==== Edit Policy ====\n";
+        cout << "Please select an option:\n";
+        cout << "1. Update Current Policy\n";
+        cout << "2. Delete Policy\n";
+        cout << "3. Return to Previous Menu\n";
+        userInput = inputValidationInt();
+
+        if (userInput == 1) {
+            updatePolicy(toUpdate);
+        }
+        else if (userInput == 2) {
+            if (deleteConfirmation()) {
+                deletePolicy(toUpdate);
+                storeUpdatedDetails(toUpdate);
             }
         }
         else if (userInput == 3) {
@@ -98,46 +157,70 @@ void claimsEditMenu(userDetails& toUpdate){
 //menu for Updating/adding Data
 //parameters: Userdata to adjust
 //returns: none
-void profileEditMenu(userDetails& toUpdate) {
-    const string userDatabase = "userDatabase.txt";
+void accountEditMenu(userDetails& toUpdate) {
     bool menuLoop = 1;
     int userInput;
 
     while (menuLoop) {
-        cout << "\n1. Update Account Detiails\n";
+        //forces close of menu after deleteing the account.
+        if (toUpdate.username == "empty") {
+            return;
+        }
+
+        cout << "\n====Update Account : " << toUpdate.username << " ====\n";
+        cout << "1. Update Account Detiails\n";
         cout << "2. Update Policy Details\n";
         cout << "3. Update Claim Details\n";
-        cout << "4. Return to Previous Menu\n";
-        cout << "Selection: ";
+        cout << "4. Close Account\n";
+        cout << "5. Return to Previous Menu\n";
 
-        userInput = inputValidation();
+        userInput = inputValidationInt();
 
         if (userInput == 1) {
             userUpdate(toUpdate);
-            storeUpdatedDetails(userDatabase, toUpdate);
+            storeUpdatedDetails(toUpdate);
         }
         else if (userInput == 2) {
             if (toUpdate.policy.policyNumber == 0) {
                 cout << "\nNo Policy exists, creating new one.\n";
                 addPolicy(toUpdate);
-                storeUpdatedDetails(userDatabase, toUpdate);
+                storeUpdatedDetails(toUpdate);
             }
             else {
-                
+                policyEditMenu(toUpdate);
             }
         }
         else if (userInput == 3) {
             if (toUpdate.claims.claimNumber == 0) {
-                cout << "\nNo current claim, creating new one.\n";
-                addClaim(toUpdate);
-                storeUpdatedDetails(userDatabase, toUpdate);
+                cout << "\nNo claim for current account.\n";
+                cout << "Would you like to create one? (y/n)\n";
+                if (inputValidationYN()) {
+                    addPolicy(toUpdate);
+                }
+                else {
+                    cout << "\nNo Claim to Edit. Returning to previous menu\n";
+                    return;
+                }
             }
             else {
-                updateClaim(toUpdate);
-                storeUpdatedDetails(userDatabase, toUpdate);
+                claimsEditMenu(toUpdate);
+                storeUpdatedDetails(toUpdate);
             }
         }
         else if (userInput == 4) {
+            cout << "\nWARNING - This cannot be undone - WARNING\n";
+
+            if (deleteConfirmation()) {
+                deleteAccount(toUpdate.username);
+                toUpdate = userDetails{};
+                cout << "\nAccount has been deleted\n";
+                menuLoop = 0;
+            }
+            else {
+                cout << "\nAction Cancelled\n";
+            }
+        }
+        else if (userInput == 5) {
             cout << "\nReturning to Previous Menu\n";
             menuLoop = 0;
         }
@@ -157,12 +240,18 @@ void userLogin(userDetails& currentUser) {
 
     //menu loop for client menu
     while (menuLoop) {
+
+        //forces close of menu after deleteing the account.
+        if (currentUser.username == "empty") {
+            return;
+        }
+
         cout << "\n==== Client Portal ====\n";
         cout << "1. View my Account\n";
         cout << "2. Add/Update Details\n";
         cout << "3. Log out\n";
 
-        userInput = inputValidation();
+        userInput = inputValidationInt();
 
         //selection logic for user input
         if (userInput == 1) {
@@ -170,8 +259,8 @@ void userLogin(userDetails& currentUser) {
         }
         else if (userInput == 2) {
             cout << "\nAdd/Update\n";
-            profileEditMenu(currentUser);
-            storeUpdatedDetails(userDatabase, currentUser);
+            accountEditMenu(currentUser);
+            storeUpdatedDetails(currentUser);
         }
         else if (userInput == 3) {
             cout << "\nLogging Out and returning to menu\n";
@@ -181,24 +270,29 @@ void userLogin(userDetails& currentUser) {
 }
 
 void viewUser(userDetails& userDetails) {
-    const string kUserDatabase = "userDatabase.txt";
     bool menuLoop = 1;
     int userInput;
 
     while (menuLoop == 1) {
+
+        //forces close of menu after deleteing the account.
+        if (userDetails.username == "empty") {
+            return;
+        }
+
         cout << "\n==== Options for Account: " << userDetails.username << " ====\n";
         cout << "1. View Account Details\n";
         cout << "2. Edit Account Details\n";
         cout << "3. Exit user account\n";
-        cout << "Selection: ";
-        userInput = inputValidation();
+
+        userInput = inputValidationInt();
 
         if (userInput == 1) {
             displayDataMenu(userDetails);
         }
         else if (userInput == 2) {
-            profileEditMenu(userDetails);
-            storeUpdatedDetails(kUserDatabase, userDetails);
+            accountEditMenu(userDetails);
+            storeUpdatedDetails(userDetails);
         }
         else if (userInput == 3) {
             cout << "\nReturning to Previous Menu\n";
@@ -230,9 +324,8 @@ void adminLogin(userDetails& currentUser) {
         cout << "2. Client Information\n";
         cout << "3. Generate Reports\n";
         cout << "4. Logout\n";
-        cout << "Selection: ";
 
-        userInput = inputValidation();
+        userInput = inputValidationInt();
 
         if (userInput == 1) {
             //force struct to default constructor
@@ -241,10 +334,26 @@ void adminLogin(userDetails& currentUser) {
             cout << "\nCreating a new account\n";
             accountCheck = getLogins(userDatabase);
             registerUser(accountCheck, clientDetails);
-            addPolicy(clientDetails);
+            
+            cout << "\nWould you like to add a policy now? (y/n)\n";
+            
+            if (inputValidationYN()) {
+                addPolicy(clientDetails);
+            }
+            else {
+                cout << "\nNo policy added";
+            }
+            
             storeUserDetails(userDatabase, clientDetails);
             cout << "\nNew User Created\n";
-            cout << "Returning to Menu\n";
+            
+            cout << "\nWould you like to open the account now? (y/n)\n";
+            if (inputValidationYN()) {
+                viewUser(clientDetails);
+            }
+            else {
+                cout << "Returning to Menu\n";
+            }
         }
         else if (userInput == 2) {
             cout << "\nEnter client's username: ";

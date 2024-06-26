@@ -7,4 +7,6 @@ using namespace std;
 
 void userLogin(userDetails& currentUser);
 
-void profileEditMenu(userDetails& toUpdate);
+void accountEditMenu(userDetails& toUpdate);
+
+void policyEditMenu(userDetails& toUpdate);

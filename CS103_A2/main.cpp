@@ -28,9 +28,8 @@ int main() {
         cout << "1. Login\n";
         cout << "2. Register\n";
         cout << "3. Exit\n";
-        cout << "Selection: ";
 
-        userInput = inputValidation();
+        userInput = inputValidationInt();
 
         //if loop for navigating menu
         if (userInput == 1) {

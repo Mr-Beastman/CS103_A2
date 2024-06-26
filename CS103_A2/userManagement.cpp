@@ -82,7 +82,7 @@ void lockAccount(string username){
     getAccountDetails(kUserDatabase, toLock,username);
 
     toLock.accountStatus = "locked";
-    storeUpdatedDetails(kUserDatabase,toLock);
+    storeUpdatedDetails(toLock);
 }
 
 //check if account is locked or active
@@ -111,7 +111,6 @@ string loginSecurity() {
     vector<userDetails> accountCheck;
     const int kMaxAttempts = 3;
     int loginAttempts = 0;
-    bool accountActive;
 
     cout << "Enter Username: ";
     cin >> username;
@@ -152,36 +151,12 @@ string loginSecurity() {
     return{};
 }
 
-//Add policy to users account
-//parameters : vector of available polocies and the user to add selection to
+//function to prompt entry of car details   
+//paramerts : struct of account to update
 //returns : none
-void addPolicy(userDetails& toUpdate) {
-    vector<insurancePolices> availablePolices;
-    const string kPolicyDatabase = "policyDatabase.txt";
-    int userInput, carYear;
+void enterCarDetails(userDetails& toUpdate) {
+    int carYear;
     string carMake, carModel, licensePlate;
-
-    cout << "\nPlease Select a Policy Option\n";
-
-    getPolicyDetails(kPolicyDatabase, availablePolices);
-
-    for (size_t i = 0; i < availablePolices.size(); ++i) {
-        cout << "Insurance Option " << (i + 1) << "\n";
-        displayPolicyDetails(availablePolices[i]);
-        cout << "\n";
-    }
-
-    cout << "\nSelection: ";
-
-    userInput = inputValidation();
-
-    if (userInput == 1 || userInput == 2 || userInput == 3) {
-        toUpdate.policy.insurerName = availablePolices[(userInput - 1)].insurer;
-        toUpdate.policy.coverageType = availablePolices[(userInput - 1)].coverage;
-        toUpdate.policy.preniumAmount = availablePolices[(userInput - 1)].premiumn;
-    }
-
-    toUpdate.policy.policyNumber = generatePolicyNum();
 
     cout << "\nPlease enter vehicle details:\n";
     cout << "Car Make: ";
@@ -197,6 +172,46 @@ void addPolicy(userDetails& toUpdate) {
     toUpdate.policy.carModel = carModel;
     toUpdate.policy.carYear = carYear;
     toUpdate.policy.licensePlate = licensePlate;
+}
+
+//Add policy to users account
+//parameters : vector of available polocies and the user to add selection to
+//returns : none
+void addPolicy(userDetails& toUpdate) {
+    vector<insurancePolices> availablePolices;
+    const string kPolicyDatabase = "policyDatabase.txt";
+    int userInput;
+    bool selectLoop=1;
+
+    cout << "\nPlease Select a Policy Option\n";
+
+    getPolicyDetails(kPolicyDatabase, availablePolices);
+
+    //dynamically populate list form policyDatabase
+    for (size_t i = 0; i < availablePolices.size(); ++i) {
+        cout << "Insurance Option " << (i + 1) << "\n";
+        displayPolicyDetails(availablePolices[i]);
+        cout << "\n";
+    }
+    
+    //dynamically adjust input options based on size of policyDatabase
+    while (selectLoop) {
+        userInput = inputValidationInt();
+
+        if (userInput > 0 && userInput <= availablePolices.size()) {
+            toUpdate.policy.insurerName = availablePolices[(userInput - 1)].insurer;
+            toUpdate.policy.coverageType = availablePolices[(userInput - 1)].coverage;
+            toUpdate.policy.preniumAmount = availablePolices[(userInput - 1)].premiumn;
+            selectLoop = 0;
+        }
+        else {
+            cout << "\nInvalid Selection. Please Try again.\n";
+        }
+    }
+
+    toUpdate.policy.policyNumber = generatePolicyNum();
+
+    enterCarDetails(toUpdate);
 }
 
 //add claim detials to a users account.
@@ -229,6 +244,8 @@ void addClaim(userDetails& toUpdate) {
     toUpdate.claims.incidentLocation = incidentLocation;
     toUpdate.claims.incidentDescription = incidentDescription;
     toUpdate.claims.claimAmount = claimAmount;
+
+    storeUpdatedDetails(toUpdate);
 }
 
 //Provide options for updating an existing claim
@@ -247,8 +264,7 @@ void updateClaim(userDetails& toUpdate) {
         cout << "3. Incident Description\n";
         cout << "4. Claim Amount\n";
         cout << "5. Return to Previous Menu\n";
-        cout << "Selection: ";
-        userInput = inputValidation();
+        userInput = inputValidationInt();
 
         if (userInput == 1) {
             cout << "Please Enter the Date of the incident (dd/mm/yyyy): ";
@@ -278,6 +294,64 @@ void updateClaim(userDetails& toUpdate) {
         else {
             cout << "\nInvalid Selection Please Try Again";
         }
+    }
+}
+
+//Provide options for updating an existing policy
+//parameters : struct of data to be updated
+//returns : none
+void updatePolicy(userDetails& toUpdate) {
+    bool menuLoop = 1;
+    int userInput;
+
+    while (menuLoop == 1) {
+        cout << "\nWhich section would you like to update?\n";
+        cout << "1. Change Policy\n";
+        cout << "2. Car Details\n";
+        cout << "3. Delete Policy\n";
+        cout << "4. Return to Previous Menu\n";
+        userInput = inputValidationInt();
+
+        if (userInput == 1){
+            cout << "\nThis overwrite your current coverage and remove connected claims.\n";
+            cout << "Do you wish to proceed? (y/n)";
+            if (inputValidationYN()) {
+                addPolicy(toUpdate);
+                deleteClaim(toUpdate);
+                storeUpdatedDetails(toUpdate);
+            }
+        }
+        else if (userInput == 2) {
+            enterCarDetails(toUpdate);
+            storeUpdatedDetails(toUpdate);
+        }
+        else if (userInput == 3) {
+            cout << "\nThis remove your current coverage and connected claims.\n";
+            cout << "Do you wish to proceed? (y/n)";
+            if (inputValidationYN()) {
+                deletePolicy(toUpdate);
+                deleteClaim(toUpdate);
+                storeUpdatedDetails(toUpdate);
+            }
+        }
+    }
+}
+
+//Saftey function to comfirm delete request.
+//parameters : none
+//returns : none
+bool deleteConfirmation() {
+    string confirmation;
+
+    cout << "Enter 'DELETE' to confirm or anything to cancel.\n";
+    cout << "Confirmation: ";
+    cin >> confirmation;
+
+    if (confirmation == "DELETE") {
+        return 1;
+    }
+    else {
+        return 0;
     }
 }
 

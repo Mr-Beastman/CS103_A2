@@ -21,6 +21,10 @@ struct policyDetails {
     string carModel;
     int carYear;
     string licensePlate;
+
+    //constructor
+    policyDetails() : insurerName("empty"), policyNumber(0), coverageType("empty"), preniumAmount(0)
+        , carMake("empty"), carModel("empty"), carYear(0), licensePlate("empty") {}
 };
 
 struct claimsDetails {
@@ -31,6 +35,10 @@ struct claimsDetails {
     string incidentDescription;
     string claimStatus;
     float claimAmount;
+
+    //constructor
+    claimsDetails() : claimNumber(0), claimDate("empty"), incidentDate("empty"), incidentLocation("empty")
+        , incidentDescription("empty"), claimStatus("empty"), claimAmount(0) {}
 };
 
 //struct to hold key user information.
@@ -49,7 +57,6 @@ struct userDetails {
     //constructor
     userDetails() : username("empty"), password("empty"), userType("user")
         , accountStatus("active"), firstName("blank"), lastName("blank"), emailAddress("blank")
-        , contactNumber(0), policy({ "blank",0,"blank",0.0,"blank","blank",0,"blank"})
-        , claims({0,"blank","blank","blank","blank","blank",0.0}) {}
+        , contactNumber(0){}
 
 };
