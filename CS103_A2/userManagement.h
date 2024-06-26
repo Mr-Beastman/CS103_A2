@@ -5,6 +5,8 @@
 
 using namespace std;
 
+void pauseAnyKey();
+
 void registerUser(vector<userDetails>& userLogins, userDetails& newUser);
 
 bool verifyLogin(vector<userDetails>& userLogins, string username, string userPassword);
@@ -19,7 +21,7 @@ void updateClaim(userDetails& toUpdate);
 
 void updatePolicy(userDetails& toUpdate);
 
-void adminLogin(userDetails& currentUser);
+void adminLoginMenu(userDetails& currentUser);
 
 void enterCarDetails(userDetails& toUpdate);
 

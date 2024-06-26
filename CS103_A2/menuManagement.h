@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void userLogin(userDetails& currentUser);
+void UserLoginMenu(userDetails& currentUser);
 
 void accountEditMenu(userDetails& toUpdate);
 

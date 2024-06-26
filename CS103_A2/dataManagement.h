@@ -20,11 +20,11 @@ void displayAccountClaim(userDetails& toDisplay);
 
 void displayDataMenu(userDetails& toDisplay);
 
-void storeUserDetails(string userDatabase, userDetails& newUser);
+void storeUserDetails(userDetails& newUser);
 
 void storeUpdatedDetails(userDetails& userUpdates);
 
-void getAccountDetails(string userDatabase, userDetails& user, string searchUser);
+void getAccountDetails(userDetails& user, string searchUser);
 
 void getPolicyDetails(string policyDatabase, vector<insurancePolices>& policies);
 

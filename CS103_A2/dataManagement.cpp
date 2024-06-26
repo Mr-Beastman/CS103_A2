@@ -49,7 +49,7 @@ int inputValidationInt() {
 }
 
 //function to confirm user input is a valid for y/n.
-//paremeters : none
+//parameters : none
 //returns : 1 true, 0 false
 bool inputValidationYN() {
     string userInput;
@@ -178,8 +178,9 @@ void displayAccountClaim(userDetails& toDisplay) {
 //writes user details to the "userDatabase"
 //Parameters : filename to store info and pntr to userDetails Variable.
 //Returns : none
-void storeUserDetails(string userDatabase, userDetails& newUser) {
-    ofstream outfile(userDatabase, ios::app);
+void storeUserDetails(userDetails& newUser) {
+    const string kUserDatabase = "userDatabase.txt";
+    ofstream outfile(kUserDatabase, ios::app);
 
     if (outfile.is_open()) {
         outfile << newUser.username << "," 
@@ -270,8 +271,9 @@ void storeUpdatedDetails(userDetails& userUpdates) {
 //search via username to get account details and update userDetails pntr
 //Parameters : database filename, userDetail structure to store in, username to search with.
 //Returns : none
-void getAccountDetails(string userDatabase, userDetails& user, string searchUser) {
-    ifstream file(userDatabase);
+void getAccountDetails(userDetails& user, string searchUser) {
+    const string kUserDatabase = "userDatabase.txt";
+    ifstream file(kUserDatabase);
     string line;
     userDetails account;
     string username;

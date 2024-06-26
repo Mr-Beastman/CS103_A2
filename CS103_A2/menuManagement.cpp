@@ -34,18 +34,30 @@ void displayDataMenu(userDetails& toDisplay) {
         userInput = inputValidationInt();
         cout << "\n";
 
-        if (userInput == 1 || userInput == 4) {
+        if (userInput == 1) {
             displayAccountData(toDisplay);
+            pauseAnyKey();
         }
-        if (userInput == 2 || userInput == 4) {
+        else if (userInput == 2) {
             displayAccountPolicy(toDisplay);
+            pauseAnyKey();
         }
-        if (userInput == 3 || userInput == 4) {
+        else if (userInput == 3) {
             displayAccountClaim(toDisplay);
+            pauseAnyKey();
+        }
+        else if (userInput == 4) {
+            displayAccountData(toDisplay);
+            displayAccountPolicy(toDisplay);
+            displayAccountClaim(toDisplay);
+            pauseAnyKey();
         }
         else if (userInput == 5) {
             cout << "\nReturning to Previous Menu\n";
             menuLoop = 0;
+        }
+        else {
+            cout << "\nInvalid Selection. Please Try Again.\n";
         }
     }
 }
@@ -61,13 +73,14 @@ void claimsEditMenu(userDetails& toUpdate){
     if (toUpdate.policy.policyNumber == 0) {
         cout << "No Active Policy at this time. Please apply before making claims\n";
         cout << "Returning to previous menu\n";
+        return;
     }
 
     //checks if there is existing claim. prompts creation if not.
     if (toUpdate.claims.claimNumber == 0) {
         cout << "\nNo claim for current account.\n";
         cout << "Would you like to create one? (y/n)\n";
-        if (inputValidationYN) {
+        if (inputValidationYN()) {
             addClaim(toUpdate);
         }
         else {
@@ -77,8 +90,8 @@ void claimsEditMenu(userDetails& toUpdate){
     }
 
     //display options for claim
-    while (menuLoop == 1) {
-        cout << "\n-- Edit Claims --\n";
+    while (menuLoop) {
+        cout << "\n==== Edit Claims ====\n";
         cout << "Please select an option:\n";
         cout << "1. Update Claim\n";
         cout << "2. Delete Claim\n";
@@ -97,7 +110,7 @@ void claimsEditMenu(userDetails& toUpdate){
             }
         }
         else if (userInput == 3) {
-            cout << "\nReturning to previous menu\n";
+            cout << "\nReturning to Previous Menu\n";
             menuLoop = 0;
         }
         else {
@@ -117,7 +130,7 @@ void policyEditMenu(userDetails& toUpdate) {
     if (toUpdate.policy.policyNumber == 0) {
         cout << "No Active Policy at this time.\n";
         cout << "Would you like to create one? (y/n)\n";
-        if (inputValidationYN) {
+        if (inputValidationYN()) {
             addPolicy(toUpdate);
         }
         else {
@@ -145,7 +158,7 @@ void policyEditMenu(userDetails& toUpdate) {
             }
         }
         else if (userInput == 3) {
-            cout << "\nReturning to previous menu\n";
+            cout << "\nReturning to Previous Menu\n";
             menuLoop = 0;
         }
         else {
@@ -167,7 +180,7 @@ void accountEditMenu(userDetails& toUpdate) {
             return;
         }
 
-        cout << "\n====Update Account : " << toUpdate.username << " ====\n";
+        cout << "\n==== Update Account ====\n";
         cout << "1. Update Account Detiails\n";
         cout << "2. Update Policy Details\n";
         cout << "3. Update Claim Details\n";
@@ -181,31 +194,12 @@ void accountEditMenu(userDetails& toUpdate) {
             storeUpdatedDetails(toUpdate);
         }
         else if (userInput == 2) {
-            if (toUpdate.policy.policyNumber == 0) {
-                cout << "\nNo Policy exists, creating new one.\n";
-                addPolicy(toUpdate);
-                storeUpdatedDetails(toUpdate);
-            }
-            else {
-                policyEditMenu(toUpdate);
-            }
+            policyEditMenu(toUpdate);
+            storeUpdatedDetails(toUpdate);
         }
         else if (userInput == 3) {
-            if (toUpdate.claims.claimNumber == 0) {
-                cout << "\nNo claim for current account.\n";
-                cout << "Would you like to create one? (y/n)\n";
-                if (inputValidationYN()) {
-                    addPolicy(toUpdate);
-                }
-                else {
-                    cout << "\nNo Claim to Edit. Returning to previous menu\n";
-                    return;
-                }
-            }
-            else {
-                claimsEditMenu(toUpdate);
-                storeUpdatedDetails(toUpdate);
-            }
+            claimsEditMenu(toUpdate);
+            storeUpdatedDetails(toUpdate);
         }
         else if (userInput == 4) {
             cout << "\nWARNING - This cannot be undone - WARNING\n";
@@ -233,7 +227,7 @@ void accountEditMenu(userDetails& toUpdate) {
 //function to display user/client menu and features.
 //paramerters : struct containing logged in users details. pntr.
 //returns : void
-void userLogin(userDetails& currentUser) {
+void UserLoginMenu(userDetails& currentUser) {
     bool menuLoop = 1;
     int userInput;
     string userDatabase = "userDatabase.txt";
@@ -269,7 +263,7 @@ void userLogin(userDetails& currentUser) {
     }
 }
 
-void viewUser(userDetails& userDetails) {
+void viewUserMenu(userDetails& userDetails) {
     bool menuLoop = 1;
     int userInput;
 
@@ -309,7 +303,7 @@ void viewUser(userDetails& userDetails) {
 //display menu for admin users.
 //parameter :
 //returns : none
-void adminLogin(userDetails& currentUser) {
+void adminLoginMenu(userDetails& currentUser) {
     bool menuLoop = 1;
     int userInput;
     userDetails clientDetails;
@@ -344,12 +338,12 @@ void adminLogin(userDetails& currentUser) {
                 cout << "\nNo policy added";
             }
             
-            storeUserDetails(userDatabase, clientDetails);
+            storeUserDetails(clientDetails);
             cout << "\nNew User Created\n";
             
             cout << "\nWould you like to open the account now? (y/n)\n";
             if (inputValidationYN()) {
-                viewUser(clientDetails);
+                viewUserMenu(clientDetails);
             }
             else {
                 cout << "Returning to Menu\n";
@@ -364,8 +358,8 @@ void adminLogin(userDetails& currentUser) {
 
             if (checkLogin(accountCheck, username)) {
                 cout << "Account Found. Loading Options\n";
-                getAccountDetails(userDatabase, clientDetails, username);
-                viewUser(clientDetails);
+                getAccountDetails(clientDetails, username);
+                viewUserMenu(clientDetails);
             }
             else {
                 cout << "Invalid Username\n";

@@ -14,6 +14,16 @@
 
 using namespace std;
 
+
+//Pause to display information, before prompting any key to conintue.
+//parameters : none
+//returns : none
+void pauseAnyKey() {
+    "\nPlease press any key to continue\n";
+    cin.ignore();
+    cin.get();
+}
+
 //Request user input for basic account info.
 //Parameters : pntr to userDetails variable to be populated.
 //Returns : none.
@@ -76,10 +86,9 @@ bool verifyLogin(vector<userDetails>& userLogins, string username, string userPa
 //paremeters : username to be checked.
 //retutns : none
 void lockAccount(string username){
-    const string kUserDatabase = "userDatabase.txt";
     userDetails toLock;
 
-    getAccountDetails(kUserDatabase, toLock,username);
+    getAccountDetails(toLock,username);
 
     toLock.accountStatus = "locked";
     storeUpdatedDetails(toLock);
@@ -89,10 +98,9 @@ void lockAccount(string username){
 //parameters : username to check
 //returns : 0 if locked 1 if active.
 bool checkAccountStatus(string username) {
-    const string kUserDatabase = "userDatabase.txt";
     userDetails toCheck;
 
-    getAccountDetails(kUserDatabase, toCheck, username);
+    getAccountDetails(toCheck, username);
     
     if (toCheck.accountStatus == "locked") {
         return 0;
@@ -198,7 +206,7 @@ void addPolicy(userDetails& toUpdate) {
     while (selectLoop) {
         userInput = inputValidationInt();
 
-        if (userInput > 0 && userInput <= availablePolices.size()) {
+        if (userInput > 0 && static_cast<size_t>(userInput) <= availablePolices.size()) {
             toUpdate.policy.insurerName = availablePolices[(userInput - 1)].insurer;
             toUpdate.policy.coverageType = availablePolices[(userInput - 1)].coverage;
             toUpdate.policy.preniumAmount = availablePolices[(userInput - 1)].premiumn;
@@ -393,7 +401,7 @@ void updateInput(int Input, userDetails& currentUser) {
         updateInput(Input, currentUser);
         break;
     case (6):
-        userLogin(currentUser);
+        UserLoginMenu(currentUser);
         break;
     }
 }

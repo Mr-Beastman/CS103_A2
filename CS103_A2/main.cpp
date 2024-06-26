@@ -11,8 +11,7 @@
 using namespace std;
 
 int main() {
-    const int kMaxAttempts = 3;
-    int userInput, loginAttempts=0;
+    int userInput;
     userDetails currentUser;
     string userDatabase = "userDatabase.txt";
     string username, userPassword;
@@ -38,14 +37,14 @@ int main() {
 
             if (!username.empty()) {
                 //populate currentUser variable with account details mathcing the login.
-                getAccountDetails(userDatabase, currentUser, username);
+                getAccountDetails(currentUser, username);
 
                 //check user type and open accordingly
                 if (currentUser.userType == "user") {
-                    userLogin(currentUser);
+                    UserLoginMenu(currentUser);
                 }
                 else if (currentUser.userType == "admin") {
-                    adminLogin(currentUser);
+                    adminLoginMenu(currentUser);
                 }
                 else {
                     //error message incase of data fault
@@ -59,7 +58,7 @@ int main() {
             //functions for registering, checking username available and saving new user.
             loginCheck = getLogins(userDatabase);
             registerUser(loginCheck,currentUser);
-            storeUserDetails(userDatabase, currentUser);
+            storeUserDetails(currentUser);
             cout << "\nNew user created\n";
             cout << "Returning to Previous Menu\n";
         }
