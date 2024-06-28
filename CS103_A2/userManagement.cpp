@@ -71,8 +71,8 @@ bool checkLogin(vector<userDetails>& userLogins, string username) {
 }
 
 //check if inputted username and password combination exists
-//parameters : vecotr of all current combinations, user input for username and password.
-//returns : True if correct false if not.
+//parameters : vector of all current combinations, user input for username and password.
+//returns : True if correct, false if not.
 bool verifyLogin(vector<userDetails>& userLogins, string username, string userPassword) {
     for (size_t i = 0; i < userLogins.size(); ++i) {
         if (userLogins[i].username == username && userLogins[i].password == userPassword) {
@@ -83,8 +83,8 @@ bool verifyLogin(vector<userDetails>& userLogins, string username, string userPa
 }
 
 //set account status to locked.
-//paremeters : username to be checked.
-//retutns : none
+//parameters : username to be checked.
+//returns : none
 void lockAccount(string username){
     userDetails toLock;
 
@@ -144,7 +144,7 @@ string loginSecurity() {
         cin >> password;
 
         if (verifyLogin(accountCheck, username, password)) {
-            cout << "\nLogin Succesfull\n";
+            cout << "\nLogin Succesful\n";
             return username;
         }
         else {
@@ -160,7 +160,7 @@ string loginSecurity() {
 }
 
 //function to prompt entry of car details   
-//paramerts : struct of account to update
+//parameters : struct of account to update
 //returns : none
 void enterCarDetails(userDetails& toUpdate) {
     int carYear;
@@ -173,7 +173,7 @@ void enterCarDetails(userDetails& toUpdate) {
     cin >> carModel;
     cout << "Car Year: ";
     cin >> carYear;
-    cout << "License Plare: ";
+    cout << "License Plate: ";
     cin >> licensePlate;
 
     toUpdate.policy.carMake = carMake;
@@ -183,7 +183,7 @@ void enterCarDetails(userDetails& toUpdate) {
 }
 
 //Add policy to users account
-//parameters : vector of available polocies and the user to add selection to
+//parameters : vector of available policies and the user to add selection to
 //returns : none
 void addPolicy(userDetails& toUpdate) {
     vector<insurancePolices> availablePolices;
@@ -195,7 +195,7 @@ void addPolicy(userDetails& toUpdate) {
 
     getPolicyDetails(kPolicyDatabase, availablePolices);
 
-    //dynamically populate list form policyDatabase
+    //dynamically populate list from policyDatabase
     for (size_t i = 0; i < availablePolices.size(); ++i) {
         cout << "Insurance Option " << (i + 1) << "\n";
         displayPolicyDetails(availablePolices[i]);
@@ -213,7 +213,7 @@ void addPolicy(userDetails& toUpdate) {
             selectLoop = 0;
         }
         else {
-            cout << "\nInvalid Selection. Please Try again.\n";
+            cout << "\nInvalid selection, Please try again.\n";
         }
     }
 
@@ -222,7 +222,7 @@ void addPolicy(userDetails& toUpdate) {
     enterCarDetails(toUpdate);
 }
 
-//add claim detials to a users account.
+//add claim details to a users account.
 //paramters : user struct that is being updated.\
 //returns : none;
 void addClaim(userDetails& toUpdate) {
@@ -237,14 +237,14 @@ void addClaim(userDetails& toUpdate) {
     toUpdate.claims.claimStatus = "Pending Review";
 
     //prompting user to enter required information
-    cout << "Please Enter the Date of the incident (dd/mm/yyyy): ";
+    cout << "Please enter the date of the incident (dd/mm/yyyy): ";
     cin >> incidentDate;
     cin.ignore();
     cout << "Where did this happen?: ";
     getline(cin, incidentLocation);
-    cout << "What Happened?: ";
+    cout << "What happened?: ";
     getline(cin,incidentDescription);
-    cout << "Claim Amount: $";
+    cout << "Claim amount: $";
     cin >> claimAmount;
 
     //populate struct with entered information
@@ -275,7 +275,7 @@ void updateClaim(userDetails& toUpdate) {
         userInput = inputValidationInt();
 
         if (userInput == 1) {
-            cout << "Please Enter the Date of the incident (dd/mm/yyyy): ";
+            cout << "Please enter the date of the incident (dd/mm/yyyy): ";
             cin >> incidentUpdate;
             cin.ignore();
             toUpdate.claims.incidentDate = incidentUpdate;
@@ -291,16 +291,16 @@ void updateClaim(userDetails& toUpdate) {
             toUpdate.claims.incidentLocation = incidentUpdate;
         }
         else if (userInput == 4) {
-            cout << "Claim Amount: $";
+            cout << "Claim amount: $";
             cin >> monetaryAmount;
             toUpdate.claims.claimAmount = monetaryAmount;
         }
         else if (userInput == 5) {
-            cout << "\nReturning to previous Menu\n";
+            cout << "\nReturning to previous menu\n";
             menuLoop = 0;
         }
         else {
-            cout << "\nInvalid Selection Please Try Again";
+            cout << "\nInvalid selection, please try again";
         }
     }
 }
@@ -351,7 +351,7 @@ void updatePolicy(userDetails& toUpdate) {
 bool deleteConfirmation() {
     string confirmation;
 
-    cout << "Enter 'DELETE' to confirm or anything to cancel.\n";
+    cout << "Enter 'DELETE' to confirm, anything else to cancel.\n";
     cout << "Confirmation: ";
     cin >> confirmation;
 

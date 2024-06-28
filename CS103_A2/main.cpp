@@ -48,7 +48,7 @@ int main() {
                 }
                 else {
                     //error message incase of data fault
-                    cout << "User Type not defined. Please contact admin team";
+                    cout << "'User Type' not defined. Please contact an administrator";
                 }
             }
         }
@@ -60,19 +60,19 @@ int main() {
             registerUser(loginCheck,currentUser);
             storeUserDetails(currentUser);
             cout << "\nNew user created\n";
-            cout << "Returning to Previous Menu\n";
+            cout << "Returning to previous menu\n";
         }
         else if (userInput == 3) {
             cout << "\nChoose to exit\n";
             menuLoop = 0;
         }
         else {
-            cout << "Invalid Selection please try again\n";
+            cout << "Invalid selection, please try again\n";
         }
     }while(menuLoop == 1);
 
     //farewell message
-    cout << "\nThank you for using the service. Have a great day!\n";
+    cout << "\nThank you for using our service. Have a great day!\n";
     
     return 0;
 }

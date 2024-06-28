@@ -24,7 +24,7 @@ void displayDataMenu(userDetails& toDisplay) {
     
     while (menuLoop) {
         cout << "\n==== View Account Information ====\n";
-        cout << "Which info do you wish to view?\n";
+        cout << "Which information do you wish to view?\n";
         cout << "1. Client Details\n";
         cout << "2. Policy Details\n";
         cout << "3. Current Claim\n";
@@ -225,7 +225,7 @@ void accountEditMenu(userDetails& toUpdate) {
 }
 
 //function to display user/client menu and features.
-//paramerters : struct containing logged in users details. pntr.
+//parameters : struct containing logged in users details. pntr.
 //returns : void
 void UserLoginMenu(userDetails& currentUser) {
     bool menuLoop = 1;
