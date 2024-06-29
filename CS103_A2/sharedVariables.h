@@ -6,57 +6,58 @@
 using namespace std;
 
 struct insurancePolices {
-    string insurer;
-    string coverage;
-    string description;
-    float premiumn;
+    int mPolicyCode;
+    string mInsurer;
+    string mCoverage;
+    string mDescription;
+    float mPremiumn;
 };
 
 struct policyDetails {
-    string insurerName;
-    int policyNumber;
-    string coverageType;
-    float preniumAmount;
-    string carMake;
-    string carModel;
-    int carYear;
-    string licensePlate;
+    string mInsurerName;
+    int mPolicyNumber;
+    string mCoverageType;
+    float mPreniumAmount;
+    string mCarMake;
+    string mCarModel;
+    int mCarYear;
+    string mLicensePlate;
 
     //constructor
-    policyDetails() : insurerName("empty"), policyNumber(0), coverageType("empty"), preniumAmount(0)
-        , carMake("empty"), carModel("empty"), carYear(0), licensePlate("empty") {}
+    policyDetails() : mInsurerName("empty"), mPolicyNumber(0), mCoverageType("empty"), mPreniumAmount(0)
+        , mCarMake("empty"), mCarModel("empty"), mCarYear(0), mLicensePlate("empty") {}
 };
 
 struct claimsDetails {
-    int claimNumber;
-    string claimDate;
-    string incidentDate;
-    string incidentLocation;
-    string incidentDescription;
-    string claimStatus;
-    float claimAmount;
+    int mClaimNumber;
+    string mClaimDate;
+    string mIncidentDate;
+    string mIncidentLocation;
+    string mIncidentDescription;
+    string mClaimStatus;
+    float mClaimAmount;
 
     //constructor
-    claimsDetails() : claimNumber(0), claimDate("empty"), incidentDate("empty"), incidentLocation("empty")
-        , incidentDescription("empty"), claimStatus("empty"), claimAmount(0) {}
+    claimsDetails() : mClaimNumber(0), mClaimDate("empty"), mIncidentDate("empty"), mIncidentLocation("empty")
+        , mIncidentDescription("empty"), mClaimStatus("empty"), mClaimAmount(0) {}
 };
 
 //struct to hold key user information.
 struct userDetails {
-    string username;
-    string password;
-    string userType;
-    string accountStatus;
-    string firstName;
-    string lastName;
-    int contactNumber;
-    string emailAddress;
-    policyDetails policy;
-    claimsDetails claims;
+    string mUsername;
+    string mPassword;
+    string mUserType;
+    string mAccountStatus;
+    string mFirstName;
+    string mLastName;
+    int mContactNumber;
+    string mEmailAddress;
+    policyDetails mPolicy;
+    claimsDetails mClaims;
 
     //constructor
-    userDetails() : username("empty"), password("empty"), userType("user")
-        , accountStatus("active"), firstName("blank"), lastName("blank"), emailAddress("blank")
-        , contactNumber(0){}
+    userDetails() : mUsername("empty"), mPassword("empty"), mUserType("user")
+        , mAccountStatus("active"), mFirstName("blank"), mLastName("blank"), mEmailAddress("blank")
+        , mContactNumber(0){}
 
 };

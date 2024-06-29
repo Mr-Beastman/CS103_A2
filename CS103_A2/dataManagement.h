@@ -10,6 +10,10 @@ int generatePolicyNum();
 
 int generateClaimNum();
 
+bool checkPolicyCode(int policyCode);
+
+int generatePolicyCode();
+
 string creationDate();
 
 void displayAccountData(userDetails& toDisplay);
@@ -26,16 +30,28 @@ void storeUpdatedDetails(userDetails& userUpdates);
 
 void getAccountDetails(userDetails& user, string searchUser);
 
-void getPolicyDetails(string policyDatabase, vector<insurancePolices>& policies);
+void addNewPolicy();
+
+void storePolicyDetails(insurancePolices newPolicy);
+
+void getPolicyDetails(vector<insurancePolices>& policies);
 
 void displayPolicyDetails(insurancePolices policy);
 
+void updatePolicyData(insurancePolices toUpdate);
+
+void storeUpdatedPolicy(insurancePolices policyUpdates);
+
 void userUpdate(userDetails& currentUser);
 
-vector<userDetails> getLogins(string userDatabase);
+vector<userDetails> getLogins();
+
+void deletePolicyData(insurancePolices toDelete);
 
 void deleteAccount(string searchUserName);
 
 void deleteClaim(userDetails& toUpdate);
 
 void deletePolicy(userDetails& toUpdate);
+
+void cleanDatabase(string databaseFile);

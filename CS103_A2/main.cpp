@@ -14,15 +14,15 @@ int main() {
     int userInput;
     userDetails currentUser;
     string userDatabase = "userDatabase.txt";
-    string username, userPassword;
-    bool menuLoop = 1,sercurityPass=0;
+    string username;
+    bool menuLoop = 1;
     vector<userDetails> loginCheck;
 
     cout << "********************************\n";
     cout << "* Ultra Insurance Manager 2024 *\n";
     cout << "********************************\n";
 
-    do {
+    while(menuLoop==1) {
         cout << "\n=== Welcome to the insurance portal ===\n";
         cout << "1. Login\n";
         cout << "2. Register\n";
@@ -40,10 +40,10 @@ int main() {
                 getAccountDetails(currentUser, username);
 
                 //check user type and open accordingly
-                if (currentUser.userType == "user") {
+                if (currentUser.mUserType == "user") {
                     UserLoginMenu(currentUser);
                 }
-                else if (currentUser.userType == "admin") {
+                else if (currentUser.mUserType == "admin") {
                     adminLoginMenu(currentUser);
                 }
                 else {
@@ -53,23 +53,21 @@ int main() {
             }
         }
         else if (userInput == 2) {
-            cout << "\nSelected register\n";
-
+            cout << "\n==== Register New User ====\n";
             //functions for registering, checking username available and saving new user.
-            loginCheck = getLogins(userDatabase);
+            loginCheck = getLogins();
             registerUser(loginCheck,currentUser);
             storeUserDetails(currentUser);
             cout << "\nNew user created\n";
             cout << "Returning to previous menu\n";
         }
         else if (userInput == 3) {
-            cout << "\nChoose to exit\n";
             menuLoop = 0;
         }
         else {
-            cout << "Invalid selection, please try again\n";
+            cout << "\nInvalid selection, please try again\n";
         }
-    }while(menuLoop == 1);
+    }
 
     //farewell message
     cout << "\nThank you for using our service. Have a great day!\n";

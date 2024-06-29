@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void pauseAnyKey();
+void pauseEnterKey();
 
 void registerUser(vector<userDetails>& userLogins, userDetails& newUser);
 
@@ -30,3 +30,9 @@ void addPolicy(userDetails& toUpdate);
 void addClaim(userDetails& toUpdate);
 
 bool deleteConfirmation();
+
+void changeClaimStatus(userDetails& toUpdate);
+
+void changeAccountStatus(userDetails& toUpdate);
+
+void changeAccountType(userDetails& toUpdate);

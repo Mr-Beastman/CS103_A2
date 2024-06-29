@@ -1,3 +1,3 @@
-Insure Supreme,Comprehensive,Covers: Damage a vehicle does to another person's vehicle or propertey. Damage that another person does to owners vehicle and loss of vehicle due to theft or fire.,1500.75
-Pro Auto Defense,Third party fire and theft,Covers for damage a vehicle does to another person’s vehicle or property. If the vehicle is stolen or vehicle is destroyed by fire.,1200.45
-Crash and Pay,Third party,Covers for the cost of any damage a vehicle does to another person’s vehicle or property.,850.30
+1,Insure King,Comprehensive,Covers damage a vehicle does to another person's vehicle or propertey. Damage that another person does to owners vehicle and loss of vehicle due to theft or fire.,1500.75
+2,Pro Auto Defense,Third party fire and theft,Covers for damage a vehicle does to another person’s vehicle or property. If the vehicle is stolen or vehicle is destroyed by fire.,1200.45
+3,Crash and Pay,Third party,Covers for the cost of any damage a vehicle does to another person’s vehicle or property.,850.30Insurance King,Partial,This won't cover much but it is cheap,150.0637,Insurance Kingdom,Commerical,Covers commerical vehicles incase of accident or vandalism,1750.56

@@ -1,1 +1,2 @@
 admin,admin01,admin,active,AdminPerson,Adminnington,2002,admin@ultrainsure.com,blank,0,blank,0,blank,blank,0,blank,0,blank,blank,blank,blank,blank,0
+testaccount,Test,user,active,Tetser,Testerson,202020,ben,Insure King,6354,Comprehensive,1500.75,Honda,Random,1557,H852AA,0,empty,empty,empty,empty,empty,0

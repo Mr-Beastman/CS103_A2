@@ -129,13 +129,11 @@
   <ItemGroup>
     <ClCompile Include="dataManagement.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="adminMenu.cpp" />
     <ClCompile Include="menuManagement.cpp" />
     <ClCompile Include="userManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dataManagement.h" />
-    <ClInclude Include="adminMenu.h" />
     <ClInclude Include="menuManagement.h" />
     <ClInclude Include="sharedVariables.h" />
     <ClInclude Include="userManagement.h" />

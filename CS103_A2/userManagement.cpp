@@ -18,26 +18,27 @@ using namespace std;
 //Pause to display information, before prompting any key to conintue.
 //parameters : none
 //returns : none
-void pauseAnyKey() {
-    "\nPlease press any key to continue\n";
+void pauseEnterKey() {
+    cout<<"Please press Enter key to continue";
     cin.ignore();
     cin.get();
 }
 
-//Request user input for basic account info.
-//Parameters : pntr to userDetails variable to be populated.
-//Returns : none.
+//request user input for basic account info.
+//parameters : pntr to userDetails variable to be populated.
+//returns : none.
 void registerUser(vector<userDetails>& userLogins, userDetails& newUser) {
     bool repeatUsername=1;
     
     //doWhile to check if username is already taken and prompt re-entery.
     do {
         cout << "Enter Username: ";
-        cin >> newUser.username;
+        cin >> newUser.mUsername;
 
-        transform(newUser.username.begin(), newUser.username.end(), newUser.username.begin(), ::tolower);
+        //forcing input to lowercase
+        transform(newUser.mUsername.begin(), newUser.mUsername.end(), newUser.mUsername.begin(), ::tolower);
 
-        if (checkLogin(userLogins, newUser.username)) {
+        if (checkLogin(userLogins, newUser.mUsername)) {
             cout << "Username already taken, please enter a new one.\n";
         }
         else {
@@ -46,16 +47,16 @@ void registerUser(vector<userDetails>& userLogins, userDetails& newUser) {
     } while (repeatUsername==1);
 
     cout << "Enter Password: ";
-    cin >> newUser.password;
+    cin >> newUser.mPassword;
     cout << "Enter First Name: ";
-    cin >> newUser.firstName;
+    cin >> newUser.mFirstName;
     cout << "Enter Last Name: ";
-    cin >> newUser.lastName;
+    cin >> newUser.mLastName;
     cout << "Enter contact number: ";
-    cin >> newUser.contactNumber;
+    cin >> newUser.mContactNumber;
     cout << "Enter email Address: ";
-    cin >> newUser.emailAddress;
-    newUser.userType = "user";
+    cin >> newUser.mEmailAddress;
+    newUser.mUserType = "user";
 }
 
 //check if a username exist in data base.
@@ -63,7 +64,7 @@ void registerUser(vector<userDetails>& userLogins, userDetails& newUser) {
 //returns : True if exists false if not.
 bool checkLogin(vector<userDetails>& userLogins, string username) {
     for (size_t i = 0; i < userLogins.size(); ++i) {
-        if (userLogins[i].username == username) {
+        if (userLogins[i].mUsername == username) {
             return 1;
         }
     }
@@ -75,7 +76,7 @@ bool checkLogin(vector<userDetails>& userLogins, string username) {
 //returns : True if correct, false if not.
 bool verifyLogin(vector<userDetails>& userLogins, string username, string userPassword) {
     for (size_t i = 0; i < userLogins.size(); ++i) {
-        if (userLogins[i].username == username && userLogins[i].password == userPassword) {
+        if (userLogins[i].mUsername == username && userLogins[i].mPassword == userPassword) {
             return 1;
         }
     }
@@ -90,7 +91,7 @@ void lockAccount(string username){
 
     getAccountDetails(toLock,username);
 
-    toLock.accountStatus = "locked";
+    toLock.mAccountStatus = "locked";
     storeUpdatedDetails(toLock);
 }
 
@@ -102,7 +103,7 @@ bool checkAccountStatus(string username) {
 
     getAccountDetails(toCheck, username);
     
-    if (toCheck.accountStatus == "locked") {
+    if (toCheck.mAccountStatus == "locked") {
         return 0;
     }
     else {
@@ -110,7 +111,7 @@ bool checkAccountStatus(string username) {
     }
 }
 
-//Used to prompt user log in and verify details.
+//used to prompt user log in and verify details.
 //parameters: none
 //returns : string of verified username or empty string.
 string loginSecurity() {
@@ -120,40 +121,46 @@ string loginSecurity() {
     const int kMaxAttempts = 3;
     int loginAttempts = 0;
 
+    cout << "\n==== Login ====\n";
     cout << "Enter Username: ";
     cin >> username;
     
-    accountCheck = getLogins(kUserDatabase);
+    accountCheck = getLogins();
 
+    //force input into lowercase
     transform(username.begin(), username.end(), username.begin(), ::tolower);
 
+    //checking if username exists
     if (!checkLogin(accountCheck,username)) {
         cout << "\nUsername not in system. Please create new accout or contact admin.\n";
         cout << "Returning to Previous Menu\n";
         return{};
     }
 
+    //checking if account has been locked for failed login attempts
     if (!checkAccountStatus(username)) {
         cout << "\nThis account has been locked. Please contact admin team.\n";
         cout << "Returning to Previous Menu\n";
         return{};
     }
 
+    //While loop to handle password attmpts
     while (loginAttempts < kMaxAttempts) {
         cout << "Enter Password: ";
         cin >> password;
 
         if (verifyLogin(accountCheck, username, password)) {
-            cout << "\nLogin Succesful\n";
+            cout << "\nLogin Successful\n";
             return username;
         }
         else {
-            cout << "\nIncorrect Password, Please try again\n";
+            cout << "\nIncorrect Password. Attempt "<<(loginAttempts+1)<<" of 3\n";
             loginAttempts++;
         }
     }
 
-    cout << "Max number of attempts reached. This account has now been locked.\n";
+    //display for max attempts reached and locking account
+    cout << "\nMax number of attempts reached. This account has now been locked.\n";
     cout << "Please Contact Admin to unlock.\n";
     lockAccount(username);
     return{};
@@ -176,10 +183,10 @@ void enterCarDetails(userDetails& toUpdate) {
     cout << "License Plate: ";
     cin >> licensePlate;
 
-    toUpdate.policy.carMake = carMake;
-    toUpdate.policy.carModel = carModel;
-    toUpdate.policy.carYear = carYear;
-    toUpdate.policy.licensePlate = licensePlate;
+    toUpdate.mPolicy.mCarMake = carMake;
+    toUpdate.mPolicy.mCarModel = carModel;
+    toUpdate.mPolicy.mCarYear = carYear;
+    toUpdate.mPolicy.mLicensePlate = licensePlate;
 }
 
 //Add policy to users account
@@ -191,9 +198,10 @@ void addPolicy(userDetails& toUpdate) {
     int userInput;
     bool selectLoop=1;
 
-    cout << "\nPlease Select a Policy Option\n";
-
-    getPolicyDetails(kPolicyDatabase, availablePolices);
+    cout << "\n==== Policy Selection ====\n";
+    cout << "Please Select a Policy Option\n";
+    cout << "\n";
+    getPolicyDetails(availablePolices);
 
     //dynamically populate list from policyDatabase
     for (size_t i = 0; i < availablePolices.size(); ++i) {
@@ -207,9 +215,9 @@ void addPolicy(userDetails& toUpdate) {
         userInput = inputValidationInt();
 
         if (userInput > 0 && static_cast<size_t>(userInput) <= availablePolices.size()) {
-            toUpdate.policy.insurerName = availablePolices[(userInput - 1)].insurer;
-            toUpdate.policy.coverageType = availablePolices[(userInput - 1)].coverage;
-            toUpdate.policy.preniumAmount = availablePolices[(userInput - 1)].premiumn;
+            toUpdate.mPolicy.mInsurerName = availablePolices[(userInput - 1)].mInsurer;
+            toUpdate.mPolicy.mCoverageType = availablePolices[(userInput - 1)].mCoverage;
+            toUpdate.mPolicy.mPreniumAmount = availablePolices[(userInput - 1)].mPremiumn;
             selectLoop = 0;
         }
         else {
@@ -217,13 +225,15 @@ void addPolicy(userDetails& toUpdate) {
         }
     }
 
-    toUpdate.policy.policyNumber = generatePolicyNum();
-
+    //generatea policy number
+    toUpdate.mPolicy.mPolicyNumber = generatePolicyNum();
+    
+    //enter car details that policy applies to.
     enterCarDetails(toUpdate);
 }
 
 //add claim details to a users account.
-//paramters : user struct that is being updated.\
+//paramters : user struct that is being updated.
 //returns : none;
 void addClaim(userDetails& toUpdate) {
     string incidentDate;
@@ -232,10 +242,12 @@ void addClaim(userDetails& toUpdate) {
     string claimStatus;
     float claimAmount;
     
-    toUpdate.claims.claimNumber = generateClaimNum();
-    toUpdate.claims.claimDate = creationDate();
-    toUpdate.claims.claimStatus = "Pending Review";
+    //set default information for claims.
+    toUpdate.mClaims.mClaimNumber = generateClaimNum();
+    toUpdate.mClaims.mClaimDate = creationDate();
+    toUpdate.mClaims.mClaimStatus = "Pending Review";
 
+    cout << "==== Enter Claim Details ====\n";
     //prompting user to enter required information
     cout << "Please enter the date of the incident (dd/mm/yyyy): ";
     cin >> incidentDate;
@@ -248,15 +260,15 @@ void addClaim(userDetails& toUpdate) {
     cin >> claimAmount;
 
     //populate struct with entered information
-    toUpdate.claims.incidentDate = incidentDate;
-    toUpdate.claims.incidentLocation = incidentLocation;
-    toUpdate.claims.incidentDescription = incidentDescription;
-    toUpdate.claims.claimAmount = claimAmount;
+    toUpdate.mClaims.mIncidentDate = incidentDate;
+    toUpdate.mClaims.mIncidentLocation = incidentLocation;
+    toUpdate.mClaims.mIncidentDescription = incidentDescription;
+    toUpdate.mClaims.mClaimAmount = claimAmount;
 
     storeUpdatedDetails(toUpdate);
 }
 
-//Provide options for updating an existing claim
+//provide options for updating an existing claim
 //parameters : struct of data to be updated
 //returns : none
 void updateClaim(userDetails& toUpdate) {
@@ -264,8 +276,18 @@ void updateClaim(userDetails& toUpdate) {
     int userInput;
     string incidentUpdate;
     float monetaryAmount;
+    const string pendingStatus = "Pending Review";
+
+    if (toUpdate.mClaims.mClaimStatus != pendingStatus) {
+        cout << "\nCurrent claim has already been " << toUpdate.mClaims.mClaimStatus << "\n";
+        cout << "No further edits can be made, please delete and file a new claim\n";
+        cout << "Returning to previous menu\n";
+        return;
+    }
 
     while (menuLoop == 1) {
+        cout << "\n==== Edit Claim ====\n";
+        displayAccountClaim(toUpdate);
         cout << "\nWhich section would you like to update?\n";
         cout << "1. Incident Date\n";
         cout << "2. Incident Location\n";
@@ -278,22 +300,22 @@ void updateClaim(userDetails& toUpdate) {
             cout << "Please enter the date of the incident (dd/mm/yyyy): ";
             cin >> incidentUpdate;
             cin.ignore();
-            toUpdate.claims.incidentDate = incidentUpdate;
+            toUpdate.mClaims.mIncidentDate = incidentUpdate;
         }
         else if (userInput == 2) {
             cout << "Where did this happen?: ";
             getline(cin, incidentUpdate);
-            toUpdate.claims.incidentLocation = incidentUpdate;
+            toUpdate.mClaims.mIncidentLocation = incidentUpdate;
         }
         else if (userInput == 3) {
             cout << "What happened?: ";
             getline(cin, incidentUpdate);
-            toUpdate.claims.incidentLocation = incidentUpdate;
+            toUpdate.mClaims.mIncidentLocation = incidentUpdate;
         }
         else if (userInput == 4) {
             cout << "Claim amount: $";
             cin >> monetaryAmount;
-            toUpdate.claims.claimAmount = monetaryAmount;
+            toUpdate.mClaims.mClaimAmount = monetaryAmount;
         }
         else if (userInput == 5) {
             cout << "\nReturning to previous menu\n";
@@ -313,39 +335,43 @@ void updatePolicy(userDetails& toUpdate) {
     int userInput;
 
     while (menuLoop == 1) {
-        cout << "\nWhich section would you like to update?\n";
+        cout << "\n==== Edit Policy ====\n";
+        displayAccountPolicy(toUpdate);
+        cout << "Which section would you like to update?\n";
         cout << "1. Change Policy\n";
         cout << "2. Car Details\n";
-        cout << "3. Delete Policy\n";
-        cout << "4. Return to Previous Menu\n";
+        cout << "3. Return to Previous Menu\n";
         userInput = inputValidationInt();
 
         if (userInput == 1){
-            cout << "\nThis overwrite your current coverage and remove connected claims.\n";
-            cout << "Do you wish to proceed? (y/n)";
+            cout << "\nThis will overwrite your current coverage and remove connected claims.\n";
+            cout << "Do you wish to proceed? (y/n)\n";
             if (inputValidationYN()) {
                 addPolicy(toUpdate);
                 deleteClaim(toUpdate);
                 storeUpdatedDetails(toUpdate);
+                cout << "\nNew Policy has been applied\n";
+            }
+            else {
+                cout << "\nNo changes have been made\n";
             }
         }
         else if (userInput == 2) {
             enterCarDetails(toUpdate);
             storeUpdatedDetails(toUpdate);
+            cout << "\nCar Details have been Updated\n";
         }
         else if (userInput == 3) {
-            cout << "\nThis remove your current coverage and connected claims.\n";
-            cout << "Do you wish to proceed? (y/n)";
-            if (inputValidationYN()) {
-                deletePolicy(toUpdate);
-                deleteClaim(toUpdate);
-                storeUpdatedDetails(toUpdate);
-            }
+            cout << "\nReturning to previous menu\n";
+            menuLoop = 0;
+        }
+        else {
+            cout << "\nInvalid selection, please try again";
         }
     }
 }
 
-//Saftey function to comfirm delete request.
+//saftey function to comfirm delete request.
 //parameters : none
 //returns : none
 bool deleteConfirmation() {
@@ -363,58 +389,196 @@ bool deleteConfirmation() {
     }
 }
 
-void updateInput(int Input, userDetails& currentUser) {
-    cout << "\nWhat would you like to do?" << "\n(input 1-5 to change information, 6 to return to menu)";
-    cin >> Input;
-    switch (Input) {
-    case (1):
-        cout << "\nFirst Name: ";
-        cin >> currentUser.firstName;
-        updateInput(Input, currentUser);
-        break;
-    case (2):
-        cout << "\nLast Name: ";
-        cin >> currentUser.lastName;
-        updateInput(Input, currentUser);
-        break;
-    case (3):
-        cout << "\nContact Number: ";
-        cin >> currentUser.contactNumber;
-        updateInput(Input, currentUser);
-        break;
-    case (4):
-        cout << "\nEmail Address: ";
-        cin >> currentUser.emailAddress;
-        updateInput(Input, currentUser);
-        break;
-    case (5):
-        cout << "\nVehicle Information: ";
+//change claim status from pending to approved/cancelled.
+//parameters : struct containing userDetails
+//return : none
+void changeClaimStatus(userDetails& toUpdate) {
+    int userInput;
+    const string approveStatus = "Approved";
+    const string declineStatus = "Declined";
+    const string pendingStatus = "Pending Review";
+    bool menuLoop = 1;
 
-        cout << "\nCar Make:";
-        cin >> currentUser.policy.carMake;
+    if (toUpdate.mClaims.mClaimNumber == 0) {
+        cout << "\nNo claim has been made for this account\n";
+        cout << "Returning to Previous Menu\n";
+        return;
+    }
+    else if (toUpdate.mClaims.mClaimStatus == approveStatus || toUpdate.mClaims.mClaimStatus == declineStatus) {
+        cout << "\nCurrent claim has already be processed and was " << toUpdate.mClaims.mClaimStatus << "\n";
+        cout << "Please create a new claim if further assitance required\n";
+        cout << "Returning to previous menu\n";
+    }
+    else if (toUpdate.mClaims.mClaimStatus == pendingStatus) {
+        while (menuLoop) {
+            cout << "\n==== Claim Review ====\n";
+            cout << "\n";
+            displayAccountClaim(toUpdate);
+            cout << "What would you like to change the claim status too?\n";
+            cout << "1. Approved\n";
+            cout << "2. Declined\n";
+            cout << "3. Return to previous menu\n";
 
-        cout << "\nCar Model: ";
-        cin >> currentUser.policy.carModel;
+            userInput = inputValidationInt();
 
-        cout << "\nCar Year: ";
-        cin >> currentUser.policy.carYear;
-        updateInput(Input, currentUser);
-        break;
-    case (6):
-        UserLoginMenu(currentUser);
-        break;
+            if (userInput == 1) {
+                cout << "\nAre you sure to want to approve this cliam (y/n)?\n";
+                cout << "This cannot be undone.\n";
+                if (inputValidationYN()) {
+                    toUpdate.mClaims.mClaimStatus = approveStatus;
+                    storeUpdatedDetails(toUpdate);
+                    cout << "Claim has been approved. Returning to previous Menu\n";
+                    menuLoop = 0;
+                }
+                else {
+                    cout << "\nNo changes made. Returning to options\n";
+                }
+            }
+            else if (userInput == 2) {
+                cout << "\nAre you sure to want to delcine this cliam (y/n)?\n";
+                cout << "This cannot be undone.\n";
+                if (inputValidationYN()) {
+                    toUpdate.mClaims.mClaimStatus = declineStatus;
+                    cout << "Claim has been declined. Returning to previous menu\n";
+                    storeUpdatedDetails(toUpdate);
+                    menuLoop = 0;
+                }
+                else {
+                    cout << "\nNo changes made. Returning to options\n";
+                }
+            }
+            else if (userInput == 3) {
+                cout << "\nNo changes made. Returning to previous menu\n";
+                menuLoop = 0;
+            }
+            else {
+                cout << "\nInvalid selection please try again";
+            }
+        }
     }
 }
 
-void userUpdate(userDetails& currentUser) {
+//change an account status depending on current state
+//parameters : struct containing userDetails
+//return : none
+void changeAccountStatus(userDetails& toUpdate) {
+    const string kUserDatabase = "userDatabase.txt";
 
+    cout << "\n==== Modify Account Status ====\n";
+    cout << toUpdate.mUsername << " current type is " << toUpdate.mAccountStatus << "\n";
+
+    if (toUpdate.mAccountStatus == "active") {
+        cout << "\nDo you wish to change it to Locked? (y/n)\n";
+        if (inputValidationYN()) {
+            toUpdate.mAccountStatus = "locked";
+            storeUpdatedDetails(toUpdate);
+        }
+        else {
+            cout << "\nAccount status unchanged\n";
+        }
+    }
+    else if (toUpdate.mAccountStatus == "locked") {
+        cout << "\nDo you wish to change it to Active? (y/n)\n";
+        if (inputValidationYN()) {
+            toUpdate.mAccountStatus = "active";
+            storeUpdatedDetails(toUpdate);
+        }
+        else {
+            cout << "\nAccount status unchanged\n";
+        }
+    }
+    else {
+        cout << "\nUser status undefined. Setting to Active\n";
+        toUpdate.mAccountStatus = "active";
+        storeUpdatedDetails(toUpdate);
+    }
+}
+
+//change an account type depending on current state
+//parameters : struct containing userDetails
+//return : none
+void changeAccountType(userDetails& toUpdate) {
+    const string kUserDatabase = "userDatabase.txt";
+    
+    cout << "\n==== Modify Account Type ====\n";
+    cout <<toUpdate.mUsername << " current type is " << toUpdate.mUserType << "\n";
+
+    if (toUpdate.mUserType == "user") {
+        cout << "\nDo you wish to change it to Admin? (y/n)\n";
+        if (inputValidationYN()) {
+            toUpdate.mUserType = "admin";
+            storeUpdatedDetails(toUpdate);
+        }
+        else {
+            cout << "\nAccount type unchanged\n";
+        }
+    }
+    else if (toUpdate.mUserType == "admin") {
+        cout << "\nDo you wish to change it to User? (y/n)\n";
+        if (inputValidationYN()) {
+            toUpdate.mUserType = "admin";
+            storeUpdatedDetails(toUpdate);
+        }
+        else {
+            cout << "\nAccount type unchanged\n";
+        }
+    }
+    else {
+        cout << "\nUser type undefined. Setting to User\n";
+        toUpdate.mUserType = "user";
+        storeUpdatedDetails(toUpdate);
+    }
+}
+
+//update user details depening on input
+//paramters : int input and userDetails to change
+//returns : true if user enters new input. false if user wishes to end editting
+bool updateInput(int Input, userDetails& currentUser) {
+    switch (Input) {
+    case (1):
+        cout << "\nFirst Name: ";
+        cin >> currentUser.mFirstName;
+        return 1;
+    case (2):
+        cout << "\nLast Name: ";
+        cin >> currentUser.mLastName;
+        return 1;
+    case (3):
+        cout << "\nContact Number: ";
+        cin >> currentUser.mContactNumber;
+        return 1;
+    case (4):
+        cout << "\nEmail Address: ";
+        cin >> currentUser.mEmailAddress;
+        return 1;
+    case (5):
+        cout << "\nReturning to Previous Menu\n";
+        return 0;
+    default:
+        cout << "\nInvalid Selection. Returning to Previous Menu.";
+        return 1;
+    }
+}
+
+//display for updating user data
+//parameters : struct containing userDetails to change
+//returns : none
+void userUpdate(userDetails& toUpdate) {
     int userInput = 0;
+    bool menuLoop = 1;
 
-    cout << "\n1: First Name: " << currentUser.firstName;
-    cout << "\n2: Last Name: " << currentUser.lastName;
-    cout << "\n3: Contact Number: " << currentUser.contactNumber;
-    cout << "\n4: Email Address: " << currentUser.emailAddress;
-    cout << "\n5: Vehicle Information: " << currentUser.policy.carMake << ", " << currentUser.policy.carModel << ", " << currentUser.policy.carYear;
+    while (menuLoop) {
+        cout << "\n==== Edit Account Details ====\n";
+        displayAccountData(toUpdate);
+        cout << "Please select an option:";
+        cout << "\n1. First Name";
+        cout << "\n2. Last Name";
+        cout << "\n3. Contact Number";
+        cout << "\n4. Email Address";
+        cout << "\n5. Return to Previous Menu\n";
 
-    updateInput(userInput, currentUser);
+        userInput = inputValidationInt();
+
+        menuLoop = updateInput(userInput, toUpdate);
+    }
 }
